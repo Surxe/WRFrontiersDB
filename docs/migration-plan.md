@@ -1,5 +1,12 @@
 # Migration plan
 
+**TL;DR:** the migration combines the nine separate WRF repositories (Exporter, Parser,
+Orchestrator, Data, Site, Discount Visualizer, Discord bot, Design and News-Scraper)
+into this one, and moves the system from a JSON data repository, host units and GitHub
+Pages to a database, containers in a guest, Cloudflare and one combined site. It
+switches over in a single cutover, with the old pipeline still serving patches and
+discount weeks until the new system is complete.
+
 The working plan for moving the WRF ecosystem into this repository. It is a living
 document: edit it as work proceeds. The strategy behind it, and the alternatives that
 were rejected, are in [ADR-0025](adr/0025-migration-strategy.md).
