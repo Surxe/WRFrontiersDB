@@ -57,8 +57,8 @@ Independent of each other and of everything else.
       (ADR-0022; G-0022-1). Protects the current server at once.
 - [ ] **Account security**: two-factor authentication on the Cloudflare, GitHub and
       registrar accounts (G-0019-8).
-- [ ] **DNS move** to Cloudflare (ADR-0019). First: check for email forwarding in use
-      (G-0019-1); write the record list and the way back (G-0019-2); start
+- [ ] **DNS move** to Cloudflare (ADR-0019). Email forwarding checked: none in use
+      (G-0019-1, resolved); write the record list and the way back (G-0019-2); start
       `docs/cloudflare.md` (G-0023-6).
 - [ ] **Pipeline memory investigation** (G-0006-3). Handed to a separate session;
       result outstanding.

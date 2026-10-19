@@ -11,14 +11,14 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 198. Resolved: 2.
+Open: 197. Resolved: 3.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
 | decision | 62 |
-| verification | 35 |
+| verification | 34 |
 | design | 85 |
 | action | 16 |
 
@@ -260,7 +260,6 @@ Open: 198. Resolved: 2.
 
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
-| [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | verification | phase 0, before the nameserver change | The domain has email forwarding records |
 | [G-0019-2](adr/0019-cloudflare-dns-hosting-tunnel.md) | design | phase 0 | The DNS move, step by step |
 | [G-0019-3](adr/0019-cloudflare-dns-hosting-tunnel.md) | decision | phase 4 | How the data bucket is read from GitHub Actions |
 | [G-0019-4](adr/0019-cloudflare-dns-hosting-tunnel.md) | design | phase 4 | Two things can deploy the Site |
@@ -353,3 +352,4 @@ Open: 198. Resolved: 2.
 |---|---|---|
 | [G-0002-3](adr/0002-one-repository.md) | 2026-10-19 | The old `WRFrontiersDB-API` repository |
 | [G-0003-3](adr/0003-repository-layout.md) | 2026-10-19 | One Astro version, one screenshot tool |
+| [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | 2026-10-19 | The domain has email forwarding records |

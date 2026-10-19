@@ -52,7 +52,7 @@ Status values:
 |---|---|---|
 | Namecheap's free email forwarding is available only to domains on Namecheap's own nameservers. | Verified 2026-10-12 | https://www.namecheap.com/support/knowledgebase/article.aspx/308/2214/how-to-setup-free-email-forwarding |
 | Therefore moving the nameservers to Cloudflare ends any Namecheap forwarding address. | Inferred | from the line above |
-| Cloudflare offers its own free forwarding ("Email Routing") for domains whose DNS it hosts. | Assumed | to confirm if forwarding is in use |
+| Cloudflare offers its own free forwarding ("Email Routing") for domains whose DNS it hosts. | Assumed | not needed: no forwarding is in use (G-0019-1) |
 
 ## DVC
 

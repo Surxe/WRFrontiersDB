@@ -143,6 +143,13 @@ defaults with no address behind them. This must be checked in Namecheap's panel 
 the move. If forwarding is in use, Cloudflare's own email routing is the replacement
 and has to be set up as part of the move.
 
+**Resolved 2026-10-19:** Namecheap's panel (Advanced DNS, Redirect Email) lists no
+forwarder and no catch-all, so no address at the domain receives mail. No repository
+under the maintainer's account, nor its history, contains an address at the domain,
+and the live site publishes none. The `MX` and SPF records are Namecheap's defaults
+with nothing behind them: nothing breaks when the nameservers change, and they need
+not be carried over to Cloudflare. No email routing is set up.
+
 ### G-0019-2. The DNS move, step by step
 
 - **Kind:** design

@@ -302,6 +302,7 @@ index produced a 27 MB file (9 MB gzipped).
   apex. There is no `AAAA` record.
 - The domain has `MX` records for Namecheap's email-forwarding service and a matching
   SPF `TXT` record. Whether any forwarding address is actually in use is not known.
+  *Update: checked 2026-10-19, none is defined (ADR-0019, G-0019-1).*
 
 ## 7. Secrets and access today (names and permissions only; no value was read)
 
