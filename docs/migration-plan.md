@@ -78,8 +78,8 @@ Code moves. Behaviour does not change.
       of tree and history.
 - [ ] Record the commit each old repository was merged at (G-0025-5).
 - [ ] Convert loose `src/` modules into `src/wrfdb_<app>/` packages (ADR-0003).
-- [ ] uv workspace with exact pins; npm workspaces; `packages/design` replaces the
-      submodule.
+- [ ] uv workspace with exact pins; npm workspaces with exact pins; `packages/design`
+      replaces the submodule.
 - [ ] Drop the Exporter's Windows-only code.
 - [ ] Root lint and format configuration.
 - [ ] CI: path-scoped jobs and one aggregate required check (ADR-0004; G-0004-1);
@@ -152,7 +152,7 @@ Mostly in parallel with phase 2. **The three spikes come first** (G-0025-3).
 
 ## Phase 4: consumers
 
-- [ ] Site: one Astro version and one screenshot tool (G-0003-3); reads the database
+- [ ] Site: upgrade to Astro 6 (G-0003-3); reads the database
       at build; the files it generates under `/data/` (G-0009-6, G-0021-4, G-0020-3,
       G-0010-7); discount pages under `/discounts/`; kebab-case routes; generated
       redirects (G-0013-1, G-0013-2, G-0013-3, G-0021-8); trailing slashes; the image

@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 199. Resolved: 1.
+Open: 198. Resolved: 2.
 
 ## Counts
 
@@ -19,7 +19,7 @@ Open: 199. Resolved: 1.
 |---|---|
 | decision | 62 |
 | verification | 35 |
-| design | 86 |
+| design | 85 |
 | action | 16 |
 
 ## By ADR
@@ -51,7 +51,6 @@ Open: 199. Resolved: 1.
 |---|---|---|---|
 | [G-0003-1](adr/0003-repository-layout.md) | decision | phase 1 | Which Python version |
 | [G-0003-2](adr/0003-repository-layout.md) | decision | phase 2 | Two settings systems |
-| [G-0003-3](adr/0003-repository-layout.md) | design | phase 4 | One Astro version, one screenshot tool |
 | [G-0003-4](adr/0003-repository-layout.md) | design | phase 2 | How TypeScript types are generated from the models |
 | [G-0003-5](adr/0003-repository-layout.md) | decision | phase 2 | Is DVC a workspace dependency or a separate tool |
 | [G-0003-6](adr/0003-repository-layout.md) | verification | phase 4 | The published codec file is used from outside |
@@ -353,3 +352,4 @@ Open: 199. Resolved: 1.
 | Gap | Resolved | Question |
 |---|---|---|
 | [G-0002-3](adr/0002-one-repository.md) | 2026-10-19 | The old `WRFrontiersDB-API` repository |
+| [G-0003-3](adr/0003-repository-layout.md) | 2026-10-19 | One Astro version, one screenshot tool |

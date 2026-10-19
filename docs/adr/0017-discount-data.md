@@ -177,9 +177,9 @@ G-0012-5.
 
 The current discount table is captured as an image so that a link pasted into Discord
 shows the table. That needs a headless browser wherever the Site is built. The DV uses
-Puppeteer, the Site uses Playwright (ADR-0003, G-0003-3). It also means the image for
-`/discounts/` changes weekly while Discord caches previews, which is existing
-behaviour.
+Puppeteer for pipeline screenshots, and that is the tool to use here (ADR-0003,
+G-0003-3). It also means the image for `/discounts/` changes weekly while Discord
+caches previews, which is existing behaviour.
 
 ### G-0017-7. Detection depends on a third party's page
 

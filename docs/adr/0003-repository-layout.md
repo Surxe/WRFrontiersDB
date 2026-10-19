@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-10 (layout, workspaces), 2026-10-12 (uv installed on the workstation) |
+| Decided | 2026-10-10 (layout, workspaces), 2026-10-12 (uv installed on the workstation), 2026-10-19 (JavaScript pins, Astro version, browser tools) |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0002 (one repository), ADR-0004 (CI), ADR-0010 (schema), ADR-0012 (state), ADR-0016 (DVC) |
@@ -83,7 +83,9 @@ WRFrontiersDB/
    connection with ADR-0016). Upgrades are deliberate edits.
 6. **npm workspaces for the JavaScript side.** `packages/design` replaces the Design
    submodule. The symlinks to a Data checkout disappear with the Data repository
-   (ADR-0009).
+   (ADR-0009). As on the Python side, every JavaScript dependency is pinned to an
+   exact version (no `^` or `~` ranges), one root `package-lock.json` is committed,
+   and all workspaces use the same version of each library (decided 2026-10-19).
 7. **Generated TypeScript types are committed** in `packages/types/`, with a CI check
    that fails when they are stale. The Site then builds without Python, and a change to
    the data contract shows up as a reviewable diff.
@@ -189,6 +191,14 @@ files.
 The Site is on Astro 5 with Playwright; the DV frontend is on Astro 6 with Puppeteer.
 One site means one version of each. Upgrading the Site to Astro 6 is probably the
 smaller change, but it was not assessed. Its cost belongs in the phase 4 estimate.
+
+**Resolved 2026-10-19:** One Astro version: the Site moves up to the DV's Astro 6,
+pinned exactly like everything else (decision 6). The two browser tools are not
+duplicates and both stay, each with one role: Puppeteer for screenshots taken by the
+pipeline (the DV's, and the discount link preview, G-0017-6), and Playwright for
+browser debugging through MCP while developing the Site, so it is a development
+dependency only and not part of any pipeline or image. The cost of the Astro upgrade
+still belongs in the phase 4 estimate.
 
 ### G-0003-4. How TypeScript types are generated from the models
 
