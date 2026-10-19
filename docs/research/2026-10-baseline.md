@@ -171,6 +171,7 @@ Facts confirmed on 2026-10-09 to 2026-10-12.
 - One guest today: the Valheim game-server VM, with a fixed 4 GiB of memory (a
   reduction to 3 GiB was decided and is being applied separately). Measured peak use
   with two players: about 2.0 GB; a six-player peak was not measured.
+  *Update: the reduction was applied on 2026-10-11 as 3.5 GiB, not 3 GiB (ADR-0006).*
 - All WRF workloads run directly on the host as systemd units, as the same account the
   AI agent uses: the pipeline, the update probe, the discount watch and the bot.
 - Storage: host root 40 GB (about 19 GB free); a dedicated 68 GB ext4 volume for WRF

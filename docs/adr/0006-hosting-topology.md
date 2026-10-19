@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-09; boundary between repositories settled 2026-10-10 |
+| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
@@ -46,12 +46,13 @@ A principle was agreed first, and used to settle several later questions:
 1. **All WRF workloads move into one Proxmox guest**: the API, the bot, the pipeline and
    its scheduled jobs. The host becomes hypervisor and backups only.
 2. **That guest is an unprivileged Linux container (LXC), not a virtual machine**,
-   with a memory limit of about 3 GiB. The exact figure waits for the pipeline memory
+   with a memory limit of about 2.5 GiB. The exact figure waits for the pipeline memory
    investigation (G-0006-3).
 3. **Inside the guest, the workloads run as Docker containers under Docker Compose**
    (ADR-0007), the same way they run on the workstation.
-4. **The Valheim VM is reduced from 4 GiB to a fixed 3 GiB**, keeping its swap file.
-   (This is being applied separately from this project.)
+4. **The Valheim VM is reduced from 4 GiB to a fixed 3.5 GiB**, keeping its swap file.
+   (Applied separately from this project. The plan was 3 GiB; 3.5 GiB is what was
+   applied, on 2026-10-11.)
 5. **The design must not depend on being at home or on Proxmox.** The same Compose file
    runs anywhere; the pipeline publishes each database to object storage and the API
    can fetch it from there. A likely later split is: the pipeline stays at home, and
@@ -66,14 +67,15 @@ A principle was agreed first, and used to settle several later questions:
    the guest, the backup timer for it). This repository's `deploy/` owns everything
    inside the guest (the Compose file, the deploy script, the scheduled-job units).
 
-Memory budget behind points 2 and 4: 7.1 GiB total, less 3 GiB for Valheim, less about
-1 GiB for the host, leaves about 3 GiB for WRF.
+Memory budget behind points 2 and 4: 7.1 GiB total, less 3.5 GiB for Valheim, less
+about 1 GiB for the host, leaves about 2.5 GiB for WRF. (With the planned 3 GiB for
+Valheim it was about 3 GiB.)
 
 ## Alternatives considered
 
 - **A virtual machine for WRF.** Stronger isolation and the form Proxmox recommends
   for running Docker. Rejected on memory: a VM's memory belongs to the VM whether used
-  or not, so fitting the pipeline's burst would mean reserving about 3 GiB around the
+  or not, so fitting the pipeline's burst would mean reserving about 2.5 GiB around the
   clock on a 7 GiB machine. A container's limit is a cap, not a reservation; idle, the
   WRF guest is estimated to use a few hundred megabytes (the bot alone uses about
   65 MB today; the Docker daemon and the API are not yet measured).
@@ -152,7 +154,7 @@ guest. Either fallback changes ADR-0007 and ADR-0016.
 - **Needed by:** phase 3
 
 The largest measured run used 4.2 GB plus 1.7 GB of swap, against a planned limit of
-about 3 GiB. The measured figure includes file cache, which the kernel can give back,
+about 2.5 GiB. The measured figure includes file cache, which the kernel can give back,
 so the true requirement is lower, but by how much is not known. An investigation was
 handed off to a separate session and has not reported. Until it does, the limit, the
 guest's swap allowance, and whether any stage needs rework are all open. If the
@@ -209,8 +211,16 @@ depends on.
 - **Kind:** verification
 - **Needed by:** before the WRF guest's limit is finalised
 
-The reduction to 3 GiB rests on a measurement with two players (about 2.0 GB peak). Six
-players was not measured. If Valheim needs more, the WRF budget shrinks.
+The VM now has 3.5 GiB (decision 4). The planned 3 GiB rested on a measurement with
+two players (about 2.0 GB peak). Six players was not measured. If Valheim needs more
+than 3.5 GiB, the WRF budget shrinks further.
+
+3 GiB was tried first, on 2026-10-10, and was too tight: within 11 hours the guest had
+about 0.6 GiB in swap (no processes killed), and the game image's updater logged that
+2.91 GiB was not enough memory every 15 minutes. 3.5 GiB was applied the next day.
+Valheim's documented rollback is 4 GiB, which would cut the WRF budget to about
+2 GiB. So the WRF budget is more likely to shrink than to grow (source:
+`valheim-server` repository, pull requests #10 and #11).
 
 ### G-0006-9. When to move the API and bot to a rented server
 

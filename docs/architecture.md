@@ -99,7 +99,7 @@ produced, the pipeline re-runs the affected stages. The order of those steps is 
 
 | Place | What | ADR |
 |---|---|---|
-| Home server, one container guest (about 3 GiB memory limit) | the pipeline, API, bot, tunnel client, and staging copies of each, as Docker Compose projects | 0006, 0007 |
+| Home server, one container guest (about 2.5 GiB memory limit) | the pipeline, API, bot, tunnel client, and staging copies of each, as Docker Compose projects | 0006, 0007 |
 | Cloudflare | DNS; the website and its staging copy; object storage; the front door of the tunnel | 0019, 0020 |
 | GitHub | the code, accumulated state, CI, container images, the Site's deployment workflow | 0002, 0004 |
 | Discord | the bot connects out to it | 0018 |

@@ -80,7 +80,7 @@ server and API work properly and partly for the room it gives the project to gro
   - A file can be built off to one side, checked, archived, compared with the previous
     one, copied to another machine and swapped in with one rename. With a server each
     of those needs a procedure.
-  - It is one more always-on process on a machine with about 3 GiB for everything
+  - It is one more always-on process on a machine with about 2.5 GiB for everything
     (ADR-0006).
   - Wholesale replacement in PostgreSQL means either migrations or dump-and-restore on
     every release.

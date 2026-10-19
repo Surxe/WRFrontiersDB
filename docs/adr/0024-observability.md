@@ -46,7 +46,7 @@ to publish.
   Actions run. Deferred to the API phase: in the first wave nothing depends on the API
   (ADR-0018).
 - **A metrics and logs stack** (Prometheus, Grafana, Loki). Rejected for now: it would
-  take a real share of the guest's 3 GiB (ADR-0006), and a one-person project does not
+  take a real share of the guest's 2.5 GiB (ADR-0006), and a one-person project does not
   need dashboards to know a patch day failed. Named as a possible learning project.
 
 ## Consequences

@@ -64,7 +64,8 @@ Independent of each other and of everything else.
       result outstanding.
 - [x] Parser fixes for dangling currency references and a missing localization key
       (done in the old Parser repository, 2026-10-10).
-- [ ] Valheim VM reduced to 3 GiB (in progress outside this project; G-0006-8).
+- [x] Valheim VM reduced to 3.5 GiB, not the planned 3 GiB (done outside this project;
+      the WRF budget is now about 2.5 GiB; G-0006-8).
 
 ## Phase 1: repository skeleton
 
