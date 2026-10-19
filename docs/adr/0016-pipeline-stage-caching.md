@@ -53,7 +53,7 @@ for an existing tool to do it, not something built in-house.
    - `uv.lock`: a dependency of the stages, so a library change re-runs them. Because
      every Python dependency is pinned exactly (ADR-0003), the lockfile only changes
      on a deliberate upgrade.
-   - parameters in `params.yaml`: the Steam manifest id, the BatchExport release,
+   - parameters in `params.yaml`: the Steam manifest id, the WRFrontiersDB-CUE4Parse release,
      stage options.
 4. **One cache is shared by production and staging.** A branch that has not changed a
    stage gets production's output for it from the cache. A branch that has changed it
@@ -175,7 +175,7 @@ tools. The Exporter is expected to have its own image, because of Proton and the
   loading a multi-gigabyte image.
 
 There is a second effect to design for: a stage's real inputs include its image (the
-operating-system packages, Proton, BatchExport). Those are not in any dependency
+operating-system packages, Proton, WRFrontiersDB-CUE4Parse). Those are not in any dependency
 folder, so a changed image would not by itself re-run a stage. The image's identity
 may need to be a declared parameter.
 
@@ -248,7 +248,7 @@ That is more moving parts for less waiting.
 - **Needed by:** phase 2
 
 Not settled: whether the mapper (which launches the game) is its own stage or part of
-export, which decides whether a BatchExport upgrade re-launches the game; where model
+export, which decides whether a WRFrontiersDB-CUE4Parse upgrade re-launches the game; where model
 files are produced; whether texture extraction stays inside parse while conversion is
 separate; and whether the Site build is a stage (decision 2 left it open, and ADR-0014,
 G-0014-2, bears on it).

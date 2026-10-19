@@ -39,7 +39,7 @@ What exists today (baseline, sections 2 and 3):
    since has contradicted it.)
 4. **One Dockerfile per deployed app, in that app's folder.** The expected images are
    `api`, `bot`, a Python `pipeline` image (orchestrator, parser, textures, db-build)
-   and an `exporter` image (Proton, BatchExport, GPU libraries). The grouping is to be
+   and an `exporter` image (Proton, WRFrontiersDB-CUE4Parse, GPU libraries). The grouping is to be
    settled at implementation.
 5. **Long-running services are Compose services**: the API, the bot, and the tunnel
    client (`cloudflared`, one per Compose stack; ADR-0019).

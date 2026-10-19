@@ -37,7 +37,7 @@ The layout has to serve three mechanical consumers besides people: CI path filte
 ```
 WRFrontiersDB/
   apps/                things that run; each has a README, tests/, and a Dockerfile if deployed
-    exporter/          Steam download, mapper, BatchExport driver      (from WRFrontiers-Exporter)
+    exporter/          Steam download, mapper, CUE4Parse export driver (from WRFrontiers-Exporter)
     parser/            exported JSON -> parsed JSON + textures         (from WRFrontiersDB-Parser)
     textures/          PNG -> WebP plus 128 px and 512 px copies       (new pipeline stage)
     db-build/          parsed JSON + state/ -> SQLite; swap-gate checks (new; absorbs Data tools/wrfdb_data)

@@ -55,7 +55,7 @@ each repository's history is a clean line of commits.
 4. **The old repositories are archived** after cutover, each with a README that points
    here.
 5. **Staying outside this repository:**
-   - `CUE4P-BatchExport`: C#, has outside contributors, and is consumed as a versioned
+   - `WRFrontiersDB-CUE4Parse` (replaced `CUE4P-BatchExport`): C#, consumed as a versioned
      release.
    - `OptionsConfig`: the maintainer's general-purpose library, used as an ordinary
      dependency.

@@ -154,7 +154,7 @@ that was rolled back. None of this is specified. See ADR-0005, G-0005-4.
 
 Decision 9 rests on being able to rebuild an old database from the Steam manifest id,
 the release tag and the lockfile. That depends on things outside the project's
-control: Steam continuing to serve old builds to the account, the pinned BatchExport
+control: Steam continuing to serve old builds to the account, the pinned WRFrontiersDB-CUE4Parse
 release remaining downloadable, and the old code still running on a current system.
 It has never been tried. One rebuild of a previous patch, done once, would turn the
 claim into a fact or show that the single copy is more precious than assumed.
