@@ -11,13 +11,13 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 200. Resolved: 0.
+Open: 199. Resolved: 1.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
-| decision | 63 |
+| decision | 62 |
 | verification | 35 |
 | design | 86 |
 | action | 16 |
@@ -39,7 +39,6 @@ Open: 200. Resolved: 0.
 |---|---|---|---|
 | [G-0002-1](adr/0002-one-repository.md) | design | phase 1 (before the history merge) | Commit messages will link to the wrong pull requests |
 | [G-0002-2](adr/0002-one-repository.md) | decision | phase 1 | Licence |
-| [G-0002-3](adr/0002-one-repository.md) | decision | phase 5 (cutover) | The old `WRFrontiersDB-API` repository |
 | [G-0002-4](adr/0002-one-repository.md) | design | phase 1 | Agent skills and per-repository instructions |
 | [G-0002-5](adr/0002-one-repository.md) | action | phase 5 (cutover) | Order of archiving against the old DV redirect page |
 | [G-0002-6](adr/0002-one-repository.md) | action | phase 5 (cutover) | Open issues and pull requests in the old repositories |
@@ -348,3 +347,9 @@ Open: 200. Resolved: 0.
 | [G-0025-7](adr/0025-migration-strategy.md) | design | phase 2 (the script), phase 5 (its last run) | The final state import |
 | [G-0025-8](adr/0025-migration-strategy.md) | action | phase -1 | No estimate |
 | [G-0025-9](adr/0025-migration-strategy.md) | design | phase 5 | Moving the bot |
+
+## Resolved
+
+| Gap | Resolved | Question |
+|---|---|---|
+| [G-0002-3](adr/0002-one-repository.md) | 2026-10-19 | The old `WRFrontiersDB-API` repository |

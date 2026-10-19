@@ -144,6 +144,11 @@ baseline, section 1.3). It has a `render.yaml`, so a hosted copy may still be ru
 It should be archived with the others, and any hosted deployment shut down. Its name is
 also the obvious name for the new API, which will instead live in `apps/api` here.
 
+**Resolved 2026-10-19:** The maintainer confirmed the repository is obsolete and has no
+remaining deployments, so there is nothing to shut down. It is ignored by the
+migration: not merged, not archived as part of cutover, and not a constraint on the
+new API, which lives in `apps/api`.
+
 ### G-0002-4. Agent skills and per-repository instructions
 
 - **Kind:** design

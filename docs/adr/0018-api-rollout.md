@@ -21,8 +21,8 @@ the migration would add a network dependency, an availability dependency on a la
 at home (ADR-0006), and a great deal of new surface, all at the moment when everything
 else is also changing.
 
-There is also a sample API repository from June 2025 that was never developed
-(ADR-0002, G-0002-3).
+There is also a sample API repository from June 2025 that was never developed. It is
+obsolete, has no remaining deployments, and is ignored here (ADR-0002, G-0002-3).
 
 ## Decision
 
