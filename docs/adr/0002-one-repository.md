@@ -190,6 +190,10 @@ repository) that will no longer exist. They need to be consolidated into this
 repository's `AGENTS.md` and `.claude/skills/`, and the patch-day runbook rewritten for
 the new pipeline (ADR-0014).
 
+**Resolved 2026-10-19:** Approved as described: the material is consolidated into
+`AGENTS.md` and `.claude/skills/`, and the patch-day runbook is rewritten for the new
+pipeline. The work itself is a phase 1 task in the migration plan.
+
 ### G-0002-5. Order of archiving against the old DV redirect page
 
 - **Kind:** action
@@ -210,6 +214,9 @@ unarchived.
 Any open issues or pull requests in the nine repositories at cutover need to be closed,
 moved or re-created here. Their number was not counted.
 
+**Resolved 2026-10-19:** No count is needed: open issues and pull requests are being
+driven to zero in every old repository.
+
 ### G-0002-7. Review of what the public repository reveals
 
 - **Kind:** action
@@ -228,6 +235,8 @@ nothing here says more than intended, in particular ADR-0006, ADR-0022 and ADR-0
 `WRFrontiersDB-Design` becomes a package inside this repository. If anything outside
 the Site and DV uses it as a submodule, that consumer would be left on a frozen copy.
 None is known; it was not searched for.
+
+**Resolved 2026-10-19:** The maintainer confirmed there are no other consumers.
 
 ## References
 

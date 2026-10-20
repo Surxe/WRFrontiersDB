@@ -11,16 +11,16 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 195. Resolved: 5.
+Open: 192. Resolved: 8.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
 | decision | 61 |
-| verification | 34 |
-| design | 84 |
-| action | 16 |
+| verification | 33 |
+| design | 83 |
+| action | 15 |
 
 ## By ADR
 
@@ -37,11 +37,8 @@ Open: 195. Resolved: 5.
 
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
-| [G-0002-4](adr/0002-one-repository.md) | design | phase 1 | Agent skills and per-repository instructions |
 | [G-0002-5](adr/0002-one-repository.md) | action | phase 5 (cutover) | Order of archiving against the old DV redirect page |
-| [G-0002-6](adr/0002-one-repository.md) | action | phase 5 (cutover) | Open issues and pull requests in the old repositories |
 | [G-0002-7](adr/0002-one-repository.md) | action | before the first ADR commit is pushed | Review of what the public repository reveals |
-| [G-0002-8](adr/0002-one-repository.md) | verification | phase 1 | Whether Design has other consumers |
 
 ### ADR-0003: Repository layout and workspaces
 
@@ -351,5 +348,8 @@ Open: 195. Resolved: 5.
 | [G-0002-1](adr/0002-one-repository.md) | 2026-10-19 | Commit messages will link to the wrong pull requests |
 | [G-0002-2](adr/0002-one-repository.md) | 2026-10-19 | Licence |
 | [G-0002-3](adr/0002-one-repository.md) | 2026-10-19 | The old `WRFrontiersDB-API` repository |
+| [G-0002-4](adr/0002-one-repository.md) | 2026-10-19 | Agent skills and per-repository instructions |
+| [G-0002-6](adr/0002-one-repository.md) | 2026-10-19 | Open issues and pull requests in the old repositories |
+| [G-0002-8](adr/0002-one-repository.md) | 2026-10-19 | Whether Design has other consumers |
 | [G-0003-3](adr/0003-repository-layout.md) | 2026-10-19 | One Astro version, one screenshot tool |
 | [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | 2026-10-19 | The domain has email forwarding records |
