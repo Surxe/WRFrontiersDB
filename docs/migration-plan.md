@@ -71,8 +71,8 @@ Independent of each other and of everything else.
 
 Code moves. Behaviour does not change.
 
-- [ ] Decide: licence (G-0002-2); Python version (G-0003-1); agent instruction files
-      (G-0003-9).
+- [x] Decide: licence (G-0002-2). Apache-2.0; `LICENSE` and `NOTICE` at the root.
+- [ ] Decide: Python version (G-0003-1); agent instruction files (G-0003-9).
 - [ ] History merge with `git filter-repo`, each repository into its folder
       (ADR-0002). Rewrite pull-request numbers in commit messages (G-0002-1). Data
       repository: `tools/` and `tests/` history only. Exporter: Windows DLLs left out

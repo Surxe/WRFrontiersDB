@@ -123,8 +123,8 @@ module list from about 32 MB to about 0.9 MB.
   it.
 - A new stage and a new upload step exist in the pipeline.
 - Game assets are now served from the project's own domain. They were already public
-  in the Data repository; the attribution notice that lived there needs a new home
-  (ADR-0002, G-0002-2).
+  in the Data repository; the attribution notice that lived there moves to this
+  repository's `NOTICE` and the Site footer (ADR-0002, G-0002-2).
 
 ## Gaps and open questions
 

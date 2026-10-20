@@ -142,6 +142,27 @@ be the intent, but it has never been decided. The Data repository's `NOTICE`
 (attribution to the game's publisher for extracted assets) also needs a new home, since
 the data it covers moves to object storage and the website (ADR-0020).
 
+**Resolved 2026-10-19:** The repository is licensed under Apache-2.0. MIT was the
+other candidate, and either one leaves the maintainer, as sole copyright holder, free
+to build a closed product on the same code later. Apache was chosen for what it adds
+if that happens: it grants no rights to the project's name (section 6), it licenses
+incoming contributions on the same terms without a contributor agreement (section 5),
+and it carries a patent grant. Recorded with it:
+
+- The licence covers original code and documentation only. Game data and assets
+  belong to MY.GAMES and Pixonic and are not licensed here; no licence on this
+  repository could grant rights to them.
+- The Data repository's attribution moves to a root `NOTICE`, which Apache requires
+  redistributions to carry, so it travels with any fork. The same file names the
+  Montserrat fonts' OFL licence in `packages/design`. On the website, the Site footer
+  already carries the attribution and moves here with the Site's code.
+- Anything published here stays reusable under Apache permanently. If a part of a
+  future product must stay closed, it is kept out of this repository from the start,
+  in a separate private repository or package.
+- Building a commercial product on extracted game data raises terms-of-service and
+  copyright questions with MY.GAMES that this licence does not answer. They would
+  need to be settled first.
+
 ### G-0002-3. The old `WRFrontiersDB-API` repository
 
 - **Kind:** decision
