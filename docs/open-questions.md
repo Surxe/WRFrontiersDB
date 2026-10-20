@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 197. Resolved: 3.
+Open: 196. Resolved: 4.
 
 ## Counts
 
@@ -19,7 +19,7 @@ Open: 197. Resolved: 3.
 |---|---|
 | decision | 62 |
 | verification | 34 |
-| design | 85 |
+| design | 84 |
 | action | 16 |
 
 ## By ADR
@@ -37,7 +37,6 @@ Open: 197. Resolved: 3.
 
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
-| [G-0002-1](adr/0002-one-repository.md) | design | phase 1 (before the history merge) | Commit messages will link to the wrong pull requests |
 | [G-0002-2](adr/0002-one-repository.md) | decision | phase 1 | Licence |
 | [G-0002-4](adr/0002-one-repository.md) | design | phase 1 | Agent skills and per-repository instructions |
 | [G-0002-5](adr/0002-one-repository.md) | action | phase 5 (cutover) | Order of archiving against the old DV redirect page |
@@ -350,6 +349,7 @@ Open: 197. Resolved: 3.
 
 | Gap | Resolved | Question |
 |---|---|---|
+| [G-0002-1](adr/0002-one-repository.md) | 2026-10-19 | Commit messages will link to the wrong pull requests |
 | [G-0002-3](adr/0002-one-repository.md) | 2026-10-19 | The old `WRFrontiersDB-API` repository |
 | [G-0003-3](adr/0003-repository-layout.md) | 2026-10-19 | One Astro version, one screenshot tool |
 | [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | 2026-10-19 | The domain has email forwarding records |

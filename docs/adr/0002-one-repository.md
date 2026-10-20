@@ -123,6 +123,14 @@ merge those links would point at unrelated items in this repository, or at nothi
 repository's messages to the full form `(Surxe/<old-repo>#N)`, which GitHub links to
 the original pull request for as long as the archived repository exists.
 
+**Resolved 2026-10-19:** The proposed default is accepted. A count on 2026-10-19 found
+489 trailing `(#N)` references across the old repositories, and 59 more commit
+messages that mention `#N` elsewhere in the body (for example "Since #131, CI on main
+fails"). Those link the same way, so the rewrite covers every bare `#N`, not only the
+trailing form. One exception to handle: a number that names another repository in
+prose, such as `(WRFrontiersDB-Design #10)` in the Site's history, must become
+`Surxe/WRFrontiersDB-Design#10`, not a reference to the commit's own repository.
+
 ### G-0002-2. Licence
 
 - **Kind:** decision
