@@ -11,13 +11,13 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 188. Resolved: 12.
+Open: 189. Resolved: 12.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
-| decision | 59 |
+| decision | 60 |
 | verification | 32 |
 | design | 82 |
 | action | 15 |
@@ -246,6 +246,7 @@ Open: 188. Resolved: 12.
 | [G-0018-4](adr/0018-api-rollout.md) | decision | not scheduled | What triggers waves 2 and 3 |
 | [G-0018-5](adr/0018-api-rollout.md) | design | wave 2 | The bot's query rules as an API |
 | [G-0018-6](adr/0018-api-rollout.md) | design | wave 2 | Versioning the API |
+| [G-0018-7](adr/0018-api-rollout.md) | decision | before wave 3 is designed | How much of the Site the API serves |
 
 ### ADR-0019: Cloudflare for DNS, site hosting and the tunnel
 

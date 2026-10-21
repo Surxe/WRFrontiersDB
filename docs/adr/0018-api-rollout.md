@@ -147,6 +147,21 @@ The path says `/v1`. What counts as a breaking change, how long an old version i
 kept, and how the API version relates to the schema version (ADR-0005, G-0005-6) are
 undefined.
 
+### G-0018-7. How much of the Site the API serves
+
+- **Kind:** decision
+- **Needed by:** before wave 3 is designed
+
+Decision 4 defers "which Site features become dynamic", but the question is wider: for
+each kind of data the Site uses, whether it is rendered into pages, shipped as
+build-time files under `/data/` (ADR-0009, G-0009-6), or fetched from the API at run
+time. Anything rendered or shipped with the Site switches atomically with each deploy;
+anything fetched from the API switches separately, when the API picks up the new
+database (ADR-0009, G-0009-4), so it can briefly disagree with the pages. The split
+decides how large the API is, how much of the Site depends on the home server
+(G-0018-4), and how much can be out of step after a swap
+([`../future-ideas/site-api-swap-consistency.md`](../future-ideas/site-api-swap-consistency.md)).
+
 ## References
 
 - FastAPI: https://fastapi.tiangolo.com/

@@ -199,6 +199,28 @@ it actually works:
 The API's side of this was explicitly deferred (ADR-0018). The bot needs the same
 answer in the first wave.
 
+**Proposed default:**
+
+- Promoted files live in a releases directory that DVC does not manage (a DVC re-run
+  deletes its outputs, ADR-0016, G-0016-8). `current` is a **relative** symbolic link
+  in that directory, repointed by creating a new link and renaming it over the old one.
+- Services mount the directory read-only, never the file.
+- The database is built in the default rollback-journal mode, not WAL, and readers open
+  it as `file:.../current?mode=ro&immutable=1`: read-only, no locking, no side files.
+- The bot and the API notice a swap with a periodic check of where `current` points,
+  at a short interval (seconds, not the bot's current 10 minutes), reopen when it
+  changes, and report the release they have open (the API through `/v1/meta`).
+  A restart remains the fallback.
+- Promotion is one ordered step: deploy the Site and wait until it is live, then
+  repoint `current`, then (once the API's responses are cached) purge that cache.
+  The Site's own pickup is its redeploy; it holds no database open in service.
+
+In the gap between the Site going live and the API picking up the swap, API answers
+come from the previous release: at worst a result links to a page the patch removed.
+That was accepted as harmless. How the Site and the API stay consistent once the Site
+uses the API (wave 3) is a future idea
+([`../future-ideas/site-api-swap-consistency.md`](../future-ideas/site-api-swap-consistency.md)).
+
 ### G-0009-5. The swap is not atomic across consumers
 
 - **Kind:** design

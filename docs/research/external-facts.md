@@ -100,6 +100,7 @@ Status values:
 | The un-suffixed official Python tags (`3.13-slim`, `3-slim`, `slim`) are Debian 13 (trixie); Debian 12 is only under explicit `-bookworm` tags. | Verified 2026-10-20 | https://github.com/docker-library/official-images, `library/python` |
 | `python:3.13-slim` reports SQLite 3.46.1, and `jsonb()` works in it. | Measured 2026-10-20 | `docker run` on the workstation, image digest `sha256:70729b46c69b...` |
 | Node 22's built-in `node:sqlite` module bundles its own SQLite, independent of the operating system: 3.51.3 in Node 22.23.2. It is marked experimental. | Measured 2026-10-20 | local, on the workstation |
+| A database opened with the URI parameter `immutable=1` is opened read-only, with no file locking and no change detection; if the file changes anyway, results may be wrong. | Verified 2026-10-20 | https://sqlite.org/uri.html |
 | The full-text module's default tokenizer does not split Chinese, Japanese or Korean text into words; a trigram tokenizer exists. | Assumed (well known) | https://sqlite.org/fts5.html |
 
 ## Python tooling
