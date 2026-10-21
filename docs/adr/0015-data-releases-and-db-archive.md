@@ -179,6 +179,11 @@ shows whole changed documents, not changed fields (ADR-0009, G-0009-3). The comp
 tool, and the first use for it (a patch-notes page, or a section of the run report),
 are not designed. Until one exists the archive is kept on trust.
 
+**Resolved 2026-10-20:** Comparing two archived databases is not needed for now. The
+archive is kept for rollback and future use; the comparison tool and its consumers are
+recorded as a future idea
+([`../future-ideas/field-level-patch-diff.md`](../future-ideas/field-level-patch-diff.md)).
+
 ### G-0015-7. Local copies and the stage cache
 
 - **Kind:** design

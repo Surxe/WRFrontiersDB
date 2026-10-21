@@ -4,7 +4,7 @@
 |---|---|
 | Recorded | 2026-10-20 |
 | State | Idea; not planned for the migration |
-| Related | ADR-0009 (decision 7, G-0009-3), ADR-0010 (documents table), ADR-0015 (database archive, G-0015-6) |
+| Related | ADR-0009 (decision 7, G-0009-3), ADR-0010 (documents table), ADR-0015 (database archive, G-0015-6; both resolved 2026-10-20 by deferring to this idea) |
 
 ## Where things stand
 

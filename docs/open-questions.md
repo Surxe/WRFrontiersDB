@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 189. Resolved: 11.
+Open: 188. Resolved: 12.
 
 ## Counts
 
@@ -19,7 +19,7 @@ Open: 189. Resolved: 11.
 |---|---|
 | decision | 59 |
 | verification | 32 |
-| design | 83 |
+| design | 82 |
 | action | 15 |
 
 ## By ADR
@@ -207,7 +207,6 @@ Open: 189. Resolved: 11.
 | [G-0015-3](adr/0015-data-releases-and-db-archive.md) | design | phase 3 | What a rollback restores |
 | [G-0015-4](adr/0015-data-releases-and-db-archive.md) | verification | not scheduled | The claim that a patch database can be rebuilt |
 | [G-0015-5](adr/0015-data-releases-and-db-archive.md) | verification | phase 3 | Storage rules to confirm at set-up |
-| [G-0015-6](adr/0015-data-releases-and-db-archive.md) | design | after cutover | Comparing two archived databases |
 | [G-0015-7](adr/0015-data-releases-and-db-archive.md) | design | phase 3 | Local copies and the stage cache |
 
 ### ADR-0016: Pipeline stage caching with DVC
@@ -352,4 +351,5 @@ Open: 189. Resolved: 11.
 | [G-0009-1](adr/0009-data-store.md) | 2026-10-20 | Which SQLite versions must be supported |
 | [G-0009-2](adr/0009-data-store.md) | 2026-10-20 | Binary JSON or text JSON for stored documents |
 | [G-0009-3](adr/0009-data-store.md) | 2026-10-20 | What `sqldiff` can and cannot show |
+| [G-0015-6](adr/0015-data-releases-and-db-archive.md) | 2026-10-20 | Comparing two archived databases |
 | [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | 2026-10-19 | The domain has email forwarding records |
