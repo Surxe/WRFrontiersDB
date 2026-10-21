@@ -11,13 +11,13 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 183. Resolved: 18.
+Open: 182. Resolved: 19.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
-| decision | 59 |
+| decision | 58 |
 | verification | 32 |
 | design | 77 |
 | action | 15 |
@@ -129,7 +129,6 @@ Open: 183. Resolved: 18.
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
 | [G-0009-6](adr/0009-data-store.md) | design | phase 4 | Data the browser fetches at run time |
-| [G-0009-8](adr/0009-data-store.md) | decision | phase 2 | How long the intermediate JSON is kept |
 
 ### ADR-0010: Database schema: documents plus generic relations
 
@@ -349,6 +348,7 @@ Open: 183. Resolved: 18.
 | [G-0009-4](adr/0009-data-store.md) | 2026-10-20 | How the swap works, and how readers notice |
 | [G-0009-5](adr/0009-data-store.md) | 2026-10-20 | The swap is not atomic across consumers |
 | [G-0009-7](adr/0009-data-store.md) | 2026-10-20 | What "no public dataset" means |
+| [G-0009-8](adr/0009-data-store.md) | 2026-10-20 | How long the intermediate JSON is kept |
 | [G-0012-6](adr/0012-accumulated-state.md) | 2026-10-20 | Committed state that never went live |
 | [G-0014-2](adr/0014-swap-gate.md) | 2026-10-20 | Promotion is several steps, and the Site is built twice |
 | [G-0015-6](adr/0015-data-releases-and-db-archive.md) | 2026-10-20 | Comparing two archived databases |

@@ -303,6 +303,10 @@ Decision 3 keeps the parsed JSON on disk. Under ADR-0016 it lives in the stage c
 subject to that cache's clean-up rule. Whether the JSON for old patches is worth
 keeping (for example to rebuild an old database with a newer schema) is undecided.
 
+**Resolved 2026-10-20:** Nothing extra is kept. The parsed JSON is retained only as
+long as the stage cache's clean-up rule keeps it (ADR-0016, decision 8); the archived
+databases (ADR-0015) are the record of each patch.
+
 ## References
 
 - `docs/research/2026-10-baseline.md`, section 4.
