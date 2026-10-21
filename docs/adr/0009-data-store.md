@@ -290,6 +290,10 @@ intent is stronger than that (for example, to make bulk copying harder), the run
 files need rethinking. If the intent is only "we do not publish and support a dataset",
 the decision should say so.
 
+**Resolved 2026-10-20:** The intent is only that the project does not publish or
+support a dataset: no documented, versioned download of the database. No effort is
+spent on obscuring the run-time files or making bulk copying harder.
+
 ### G-0009-8. How long the intermediate JSON is kept
 
 - **Kind:** decision
