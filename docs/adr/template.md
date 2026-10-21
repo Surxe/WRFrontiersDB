@@ -4,7 +4,7 @@
 |---|---|
 | Status | Proposed / Accepted / Superseded by ADR-NNNN / Deprecated |
 | Decided | YYYY-MM-DD |
-| Record state | Draft for maintainer review (remove this row once reviewed) |
+| Record state | Draft for maintainer review / Reviewed |
 | Decided by | Who decided; who drafted |
 | Related | ADR-NNNN (why it is related) |
 

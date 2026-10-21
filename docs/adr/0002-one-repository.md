@@ -4,7 +4,7 @@
 |---|---|
 | Status | Accepted |
 | Decided | 2026-10-09 (new repository, history merge), 2026-10-10 (monorepo confirmed) |
-| Record state | Draft for maintainer review |
+| Record state | Reviewed |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0003 (layout), ADR-0004 (CI), ADR-0005 (releases), ADR-0025 (migration) |
 

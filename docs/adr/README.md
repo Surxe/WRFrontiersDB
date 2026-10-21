@@ -5,9 +5,11 @@ How these records work is itself a decision: see
 accepted record is not rewritten, it is superseded by a new one; and every record
 lists what it leaves open.
 
-**Every record below is marked "Draft for maintainer review".** The decisions were
-agreed in conversation between 2026-10-08 and 2026-10-12. The write-ups, and in
-particular the gaps they name, have not been reviewed yet.
+**Records marked "Draft for maintainer review" have not been reviewed yet.** The
+decisions were agreed in conversation between 2026-10-08 and 2026-10-12; for a draft,
+the write-up, and in particular the gaps it names, may still change. Once a record is
+reviewed, its "Record state" row changes to "Reviewed", so
+`grep -l '| Record state | Reviewed |' docs/adr/0*.md` lists the reviewed ones.
 
 ## Index
 
