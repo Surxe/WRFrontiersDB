@@ -166,6 +166,10 @@ images. Both need the versioned address. Either the object tables shipped to the
 browser carry the hash and sizes, or a small manifest is generated at build time.
 See ADR-0009, G-0009-6.
 
+*Narrowed 2026-10-20:* ADR-0009, G-0009-6 settled that the Site build generates the
+browser's data files from the database; whichever answer is chosen here is produced
+by that same build.
+
 ### G-0020-4. Model files: caching, compression and cross-origin access
 
 - **Kind:** verification

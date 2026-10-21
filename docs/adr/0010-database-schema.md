@@ -197,6 +197,10 @@ strings a page uses, or renders text at build time, is not decided, and it deter
 how the table is queried. The Site also has a few strings of its own (`locales/`) that
 are not game data.
 
+*Narrowed 2026-10-20:* until cutover the Site keeps shipping the whole file for the
+chosen language, generated from this table at build time (ADR-0009, G-0009-6). This
+gap is now about what replaces that after cutover.
+
 ### G-0010-8. The contents of `meta`
 
 - **Kind:** design

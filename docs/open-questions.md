@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 182. Resolved: 19.
+Open: 181. Resolved: 21.
 
 ## Counts
 
@@ -19,8 +19,8 @@ Open: 182. Resolved: 19.
 |---|---|
 | decision | 58 |
 | verification | 32 |
-| design | 77 |
-| action | 15 |
+| design | 75 |
+| action | 16 |
 
 ## By ADR
 
@@ -128,7 +128,7 @@ Open: 182. Resolved: 19.
 
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
-| [G-0009-6](adr/0009-data-store.md) | design | phase 4 | Data the browser fetches at run time |
+| [G-0009-9](adr/0009-data-store.md) | action | phase 4 | The list of run-time data files |
 
 ### ADR-0010: Database schema: documents plus generic relations
 
@@ -276,7 +276,6 @@ Open: 182. Resolved: 19.
 | [G-0021-1](adr/0021-site-url-structure.md) | verification | phase 4 (on staging) | Redirects, real pages and trailing slashes on the host |
 | [G-0021-2](adr/0021-site-url-structure.md) | decision | phase 4 | Which address is canonical for the latest week |
 | [G-0021-3](adr/0021-site-url-structure.md) | verification | phase 4 | Outside users of files that are moving |
-| [G-0021-4](adr/0021-site-url-structure.md) | design | phase 4 | What generates the files under `/data/` |
 | [G-0021-5](adr/0021-site-url-structure.md) | action | phase 5 (cutover) | Legal pages and the Discord application |
 | [G-0021-6](adr/0021-site-url-structure.md) | design | phase 4 | How staging-only pages are kept out of production |
 | [G-0021-7](adr/0021-site-url-structure.md) | action | phase 4 | Sitemap and robots file |
@@ -347,6 +346,7 @@ Open: 182. Resolved: 19.
 | [G-0009-3](adr/0009-data-store.md) | 2026-10-20 | What `sqldiff` can and cannot show |
 | [G-0009-4](adr/0009-data-store.md) | 2026-10-20 | How the swap works, and how readers notice |
 | [G-0009-5](adr/0009-data-store.md) | 2026-10-20 | The swap is not atomic across consumers |
+| [G-0009-6](adr/0009-data-store.md) | 2026-10-20 | Data the browser fetches at run time |
 | [G-0009-7](adr/0009-data-store.md) | 2026-10-20 | What "no public dataset" means |
 | [G-0009-8](adr/0009-data-store.md) | 2026-10-20 | How long the intermediate JSON is kept |
 | [G-0012-6](adr/0012-accumulated-state.md) | 2026-10-20 | Committed state that never went live |
@@ -354,3 +354,4 @@ Open: 182. Resolved: 19.
 | [G-0015-6](adr/0015-data-releases-and-db-archive.md) | 2026-10-20 | Comparing two archived databases |
 | [G-0018-3](adr/0018-api-rollout.md) | 2026-10-20 | Picking up a new database |
 | [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | 2026-10-19 | The domain has email forwarding records |
+| [G-0021-4](adr/0021-site-url-structure.md) | 2026-10-20 | What generates the files under `/data/` |

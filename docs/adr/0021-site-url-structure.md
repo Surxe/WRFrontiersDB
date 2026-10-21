@@ -167,6 +167,10 @@ These files came from the Data checkout or from the Site's build. In the new des
 each must be generated from the database at build time. The list, and the shape of
 each file, is not written down. Same question as ADR-0009, G-0009-6.
 
+**Resolved 2026-10-20:** Settled with ADR-0009, G-0009-6: the Site build generates
+them from the database in today's shapes, under `/data/`. The list itself is ADR-0009,
+G-0009-9.
+
 ### G-0021-5. Legal pages and the Discord application
 
 - **Kind:** action
