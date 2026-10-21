@@ -11,13 +11,13 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 192. Resolved: 8.
+Open: 191. Resolved: 9.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
-| decision | 61 |
+| decision | 60 |
 | verification | 33 |
 | design | 83 |
 | action | 15 |
@@ -129,7 +129,6 @@ Open: 192. Resolved: 8.
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
 | [G-0009-1](adr/0009-data-store.md) | decision | phase 2 | Which SQLite versions must be supported |
-| [G-0009-2](adr/0009-data-store.md) | decision | phase 2 | Binary JSON or text JSON for stored documents |
 | [G-0009-3](adr/0009-data-store.md) | verification | phase 2 | What `sqldiff` can and cannot show |
 | [G-0009-4](adr/0009-data-store.md) | design | phase 3 | How the swap works, and how readers notice |
 | [G-0009-5](adr/0009-data-store.md) | design | phase 3 | The swap is not atomic across consumers |
@@ -352,4 +351,5 @@ Open: 192. Resolved: 8.
 | [G-0002-6](adr/0002-one-repository.md) | 2026-10-19 | Open issues and pull requests in the old repositories |
 | [G-0002-8](adr/0002-one-repository.md) | 2026-10-19 | Whether Design has other consumers |
 | [G-0003-3](adr/0003-repository-layout.md) | 2026-10-19 | One Astro version, one screenshot tool |
+| [G-0009-2](adr/0009-data-store.md) | 2026-10-20 | Binary JSON or text JSON for stored documents |
 | [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | 2026-10-19 | The domain has email forwarding records |

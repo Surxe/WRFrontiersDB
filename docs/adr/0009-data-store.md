@@ -150,6 +150,12 @@ comparison output (decision 7) that shows changed documents as unreadable binary
 Storing documents as JSON text avoids both and still allows the same queries. This
 should be decided with a quick measurement rather than assumed.
 
+**Resolved 2026-10-20:** Documents are stored as JSON text, without a measurement.
+SQLite's JSON functions and the `->` / `->>` operators read text JSON directly, so
+the same queries work, the file stays readable in any tool, and `sqldiff` output
+shows changed documents as text. Nothing in the schema now needs the binary format,
+which changes the reason for the version floor in G-0009-1.
+
 ### G-0009-3. What `sqldiff` can and cannot show
 
 - **Kind:** verification

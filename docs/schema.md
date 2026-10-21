@@ -116,8 +116,8 @@ One row per parsed object.
 | promoted columns | added per type as queries need them (2.8) |
 
 Open: whether the primary key is `id` or `(type, id)`. No id is shared between types
-today, but nothing guarantees it (ADR-0010, G-0010-2). Whether `data` is stored as
-SQLite's binary JSON or as text (ADR-0009, G-0009-2).
+today, but nothing guarantees it (ADR-0010, G-0010-2). `data` is stored as JSON
+text, not SQLite's binary JSON (ADR-0009, G-0009-2).
 
 ### 2.2 `refs`
 
