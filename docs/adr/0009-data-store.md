@@ -258,6 +258,11 @@ build before the swap to shorten the window, but the order of "flip the pointer"
 "Site deployment finished", and what happens when the deployment fails after the flip,
 is not defined. See G-0014-2.
 
+**Resolved 2026-10-20:** The order is set by G-0009-4: the Site version is deployed and
+live before `current` is repointed, so the bot never links to an undeployed page. If
+the Site deployment fails, `current` and the services are untouched. Failure and retry
+of the whole promotion are settled in ADR-0014, G-0014-2.
+
 ### G-0009-6. Data the browser fetches at run time
 
 - **Kind:** design

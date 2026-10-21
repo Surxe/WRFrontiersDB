@@ -150,6 +150,41 @@ of the gate's build (hand it to the workflow as a file, or deploy from the serve
 or drop the server-side build and treat the workflow's build as the gate step, waiting
 for it before promoting.
 
+**Resolved 2026-10-20:**
+
+- **The Site is built once.** Step 4 runs the deploy workflow in upload-only mode: it
+  builds the Site against the candidate and uploads it as a new Worker version with
+  `wrangler versions upload`, tagged with the release id. An uploaded version serves no
+  traffic, so a failure here is still before the commit and changes nothing. The
+  server-side build is dropped. Promotion deploys that exact version with
+  `wrangler versions deploy`, an atomic switch. The Cloudflare token stays in GitHub
+  (ADR-0019). Staging and production are separate Workers, so each uploads its own
+  version in its own gate run.
+- **The order within step 6** is ADR-0009, G-0009-4: deploy the Site version and wait
+  until it is live, repoint `current`, call the internal reload endpoints and confirm
+  the new release, then purge the API cache. That also answers what the bot does in
+  between: it keeps serving the previous release, which never links to an undeployed
+  page.
+- **The state commit stays before promotion** (step 5). Committing after would risk a
+  live release whose state exists nowhere in git, so the next run could reassign build
+  codes or slugs that users already have.
+- **Promotion is idempotent and is retried until it succeeds.** Every action in it is
+  safe to repeat: deploying the same version, repointing `current` to the same file,
+  calling reload. Requirements that make this hold:
+  - the pipeline records the outcome of each promotion ("release N promoted") as
+    operational state outside git (ADR-0012, decision 5). A retry acts only on the last
+    committed release without that record, so a manual rollback is never undone by a
+    retry;
+  - a retry finds the Site version by its release tag and deploys it; it never builds
+    again. Cloudflare keeps the last 100 versions, far more than a retry needs;
+  - a run that starts while a promotion is pending finishes it first, under the
+    machine-wide pipeline lock (ADR-0008), and the gate's "not older than
+    production" check still stops an older release from being promoted over a newer
+    one;
+  - a promotion that stops part-way (for example, Site live, `current` not repointed)
+    leaves the bot and the API one release behind the Site until the retry. The run
+    report says so prominently (ADR-0024).
+
 ### G-0014-3. Where the gate's code lives and what runs it
 
 - **Kind:** design

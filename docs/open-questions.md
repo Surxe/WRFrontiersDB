@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 187. Resolved: 14.
+Open: 184. Resolved: 17.
 
 ## Counts
 
@@ -19,7 +19,7 @@ Open: 187. Resolved: 14.
 |---|---|
 | decision | 60 |
 | verification | 32 |
-| design | 80 |
+| design | 77 |
 | action | 15 |
 
 ## By ADR
@@ -128,7 +128,6 @@ Open: 187. Resolved: 14.
 
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
-| [G-0009-5](adr/0009-data-store.md) | design | phase 3 | The swap is not atomic across consumers |
 | [G-0009-6](adr/0009-data-store.md) | design | phase 4 | Data the browser fetches at run time |
 | [G-0009-7](adr/0009-data-store.md) | decision | phase 4 | What "no public dataset" means |
 | [G-0009-8](adr/0009-data-store.md) | decision | phase 2 | How long the intermediate JSON is kept |
@@ -167,7 +166,6 @@ Open: 187. Resolved: 14.
 | [G-0012-3](adr/0012-accumulated-state.md) | design | phase 2 | Two writers |
 | [G-0012-4](adr/0012-accumulated-state.md) | design | phase 2 | State written by one release and read by another |
 | [G-0012-5](adr/0012-accumulated-state.md) | design | phase 2 (the import) | Which existing files are state |
-| [G-0012-6](adr/0012-accumulated-state.md) | design | phase 2 | Committed state that never went live |
 | [G-0012-7](adr/0012-accumulated-state.md) | decision | after cutover | Reviewing what the pipeline commits |
 
 ### ADR-0013: Slugs and link stability
@@ -188,7 +186,6 @@ Open: 187. Resolved: 14.
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
 | [G-0014-1](adr/0014-swap-gate.md) | design | phase 2 | Assets are uploaded before the gate has passed |
-| [G-0014-2](adr/0014-swap-gate.md) | design | phase 3 | Promotion is several steps, and the Site is built twice |
 | [G-0014-3](adr/0014-swap-gate.md) | design | phase 2 | Where the gate's code lives and what runs it |
 | [G-0014-4](adr/0014-swap-gate.md) | design | phase 2 | The count threshold on small types |
 | [G-0014-5](adr/0014-swap-gate.md) | design | phase 2 | Canaries that name game objects |
@@ -351,6 +348,9 @@ Open: 187. Resolved: 14.
 | [G-0009-2](adr/0009-data-store.md) | 2026-10-20 | Binary JSON or text JSON for stored documents |
 | [G-0009-3](adr/0009-data-store.md) | 2026-10-20 | What `sqldiff` can and cannot show |
 | [G-0009-4](adr/0009-data-store.md) | 2026-10-20 | How the swap works, and how readers notice |
+| [G-0009-5](adr/0009-data-store.md) | 2026-10-20 | The swap is not atomic across consumers |
+| [G-0012-6](adr/0012-accumulated-state.md) | 2026-10-20 | Committed state that never went live |
+| [G-0014-2](adr/0014-swap-gate.md) | 2026-10-20 | Promotion is several steps, and the Site is built twice |
 | [G-0015-6](adr/0015-data-releases-and-db-archive.md) | 2026-10-20 | Comparing two archived databases |
 | [G-0018-3](adr/0018-api-rollout.md) | 2026-10-20 | Picking up a new database |
 | [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | 2026-10-19 | The domain has email forwarding records |

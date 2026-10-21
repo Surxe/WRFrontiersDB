@@ -193,6 +193,10 @@ the committed state describes a release that is not live. For grow-only data tha
 harmless, but the next run must not treat that release as published. The commit could
 record its outcome, or promotion could be made safe to retry until it succeeds.
 
+**Resolved 2026-10-20:** Both, as decided in ADR-0014, G-0014-2: promotion is
+idempotent and retried until it succeeds, and the pipeline records each promotion's
+outcome outside git, so the next run knows whether the last committed release is live.
+
 ### G-0012-7. Reviewing what the pipeline commits
 
 - **Kind:** decision

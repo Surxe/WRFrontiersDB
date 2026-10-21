@@ -25,6 +25,8 @@ Status values:
 | Requests for static assets are free and unlimited. A request is billed only when it invokes Worker code. The free plan allows 100,000 Worker invocations a day. | Verified 2026-10-12 | https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/ |
 | The exact behaviour of the `html_handling: "auto-trailing-slash"` setting against the site's routes. | Assumed | to confirm on staging |
 | Cloudflare Web Analytics can be added to a site served this way. | Assumed | to confirm at set-up |
+| A Worker version captures its code, static assets, bindings and settings. Uploading a version and deploying it can be separate steps: `wrangler deploy` does both, while an uploaded version serves no traffic until a deployment points at it. A version can carry a message and a tag. | Verified 2026-10-20 | https://developers.cloudflare.com/workers/configuration/versions-and-deployments/ |
+| Rollback is possible only to the 100 most recently published versions. | Verified 2026-10-20 | https://developers.cloudflare.com/workers/configuration/versions-and-deployments/rollbacks/ |
 
 ## Cloudflare R2
 
