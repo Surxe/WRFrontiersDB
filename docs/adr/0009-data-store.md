@@ -136,6 +136,13 @@ explicitly (`python:3.13-slim-trixie`, not the floating `slim` tag). Every progr
 opens the file checks that `jsonb()` works at start-up and refuses to run otherwise,
 and CI runs that check inside each built image.
 
+**Resolved 2026-10-20:** The proposed default is accepted, adjusted for G-0009-2
+(documents stored as JSON text, so binary JSON is not used). The minimum is SQLite
+**3.38**, the first version with the JSON functions built in by default and the `->` /
+`->>` operators. The start-up check runs a `->>` query instead of `jsonb()`. Python
+images still name the Debian release (`-trixie`), and CI still runs the check inside
+each built image. Even Debian 12's 3.40.1 would meet this minimum.
+
 ### G-0009-2. Binary JSON or text JSON for stored documents
 
 - **Kind:** decision

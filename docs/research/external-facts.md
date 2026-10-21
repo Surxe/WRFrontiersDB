@@ -93,6 +93,7 @@ Status values:
 | Fact | Status | Source |
 |---|---|---|
 | The binary JSON format ("JSONB") and its functions need SQLite 3.45.0 or newer. | Assumed (well known) | https://sqlite.org/jsonb.html |
+| The JSON functions are built into SQLite by default from 3.38.0 (before that they were an optional extension), and the `->` / `->>` operators were added in 3.38.0. | Verified 2026-10-20 | https://sqlite.org/json1.html |
 | Both machines have SQLite 3.46.1 (through Python 3.13.5). | Measured 2026-10-12 | local |
 | The official Python images build Python against the Debian package `libsqlite3-dev`, so Python's `sqlite3` module uses the SQLite of the image's Debian release. | Verified 2026-10-20 | https://github.com/docker-library/python, `3.13/slim-trixie/Dockerfile` |
 | Debian's SQLite: 3.40.1 in Debian 12 (bookworm), 3.46.1 in Debian 13 (trixie). So a `-bookworm` image lacks JSONB and a `-trixie` image has it. | Verified 2026-10-20 | https://sources.debian.org/src/sqlite3/ |
