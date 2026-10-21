@@ -175,6 +175,10 @@ list which objects changed, but not to say how. A readable per-field comparison 
 kind a patch-notes page would need) requires a small JSON-aware tool on top. `sqldiff`
 is also not installed on either machine today.
 
+**Resolved 2026-10-20:** For the migration, `sqldiff` is used only to identify which
+objects changed. Field-level comparison is out of scope and recorded as a future idea
+([`../future-ideas/field-level-patch-diff.md`](../future-ideas/field-level-patch-diff.md)).
+
 ### G-0009-4. How the swap works, and how readers notice
 
 - **Kind:** design

@@ -11,14 +11,14 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 190. Resolved: 10.
+Open: 189. Resolved: 11.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
 | decision | 59 |
-| verification | 33 |
+| verification | 32 |
 | design | 83 |
 | action | 15 |
 
@@ -128,7 +128,6 @@ Open: 190. Resolved: 10.
 
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
-| [G-0009-3](adr/0009-data-store.md) | verification | phase 2 | What `sqldiff` can and cannot show |
 | [G-0009-4](adr/0009-data-store.md) | design | phase 3 | How the swap works, and how readers notice |
 | [G-0009-5](adr/0009-data-store.md) | design | phase 3 | The swap is not atomic across consumers |
 | [G-0009-6](adr/0009-data-store.md) | design | phase 4 | Data the browser fetches at run time |
@@ -352,4 +351,5 @@ Open: 190. Resolved: 10.
 | [G-0003-3](adr/0003-repository-layout.md) | 2026-10-19 | One Astro version, one screenshot tool |
 | [G-0009-1](adr/0009-data-store.md) | 2026-10-20 | Which SQLite versions must be supported |
 | [G-0009-2](adr/0009-data-store.md) | 2026-10-20 | Binary JSON or text JSON for stored documents |
+| [G-0009-3](adr/0009-data-store.md) | 2026-10-20 | What `sqldiff` can and cannot show |
 | [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | 2026-10-19 | The domain has email forwarding records |
