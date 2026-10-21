@@ -273,6 +273,11 @@ index produced a 27 MB file (9 MB gzipped).
   `ModuleType`, `ModuleSocketType`, `VirtualBot`, `CharacterModule`), the build-code
   registry and model files for the robot builder and 3D viewer; and the slug map.
   These come from the data checkout published with the site.
+  *Update 2026-10-20: a map viewer was added on 2026-10-15, after this snapshot. It
+  loads the `Map` and `Powerup` object tables (27 KB and 6 KB) and per-map files from
+  the Data repository's `current/Maps/`: 84 `.glb` 3D models (81 MB in all, a base
+  model per map and game mode plus foliage) and 12 JSON pin files (0.1 MB). Measured
+  from the published Data repository.*
 - Every image is served as the original PNG. The robots list page draws 43 robot icons
   at 24 px and transfers about 74 MB; the module list transfers about 32 MB.
 

@@ -338,12 +338,16 @@ an older local build):
 | robot builder | object tables `Module`, `ModuleType`, `ModuleSocketType`, `VirtualBot`, `CharacterModule` | 2.9 MB, 0.8 MB and small |
 | robot builder | the build-code registry (`/build_codes.json`) | small |
 | 3D model viewer | `Models/<id>.json` (object storage, ADR-0020) | 405 MB in 258 files |
-| map viewer | object tables `Map` and `Powerup`, and per-map pins, base and foliage files | not measured |
+| map viewer | object tables `Map` and `Powerup` | 27 KB and 6 KB |
+| map viewer | per-map pin files (`Maps/*.json`) | 0.1 MB in 12 files |
+| map viewer | per-map base and foliage 3D models (`Maps/*.glb`; object storage, ADR-0020) | 81 MB in 84 files |
 | object links | `/slug_map.json` | small |
 | images | textures (object storage, ADR-0020) | 140 MB of PNG |
 
-The map viewer is missing from the baseline (section 5.1). The inventory should be
-checked against the Site's code once more when the Site moves in.
+The map viewer was added on 2026-10-15, after the baseline was taken (see the update
+note in its section 5.1); map sizes are from the published Data repository on
+2026-10-20. The inventory should be checked against the Site's code once more when
+the Site moves in.
 
 ## References
 
