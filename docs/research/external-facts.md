@@ -97,6 +97,7 @@ Status values:
 | The official Python images build Python against the Debian package `libsqlite3-dev`, so Python's `sqlite3` module uses the SQLite of the image's Debian release. | Verified 2026-10-20 | https://github.com/docker-library/python, `3.13/slim-trixie/Dockerfile` |
 | Debian's SQLite: 3.40.1 in Debian 12 (bookworm), 3.46.1 in Debian 13 (trixie). So a `-bookworm` image lacks JSONB and a `-trixie` image has it. | Verified 2026-10-20 | https://sources.debian.org/src/sqlite3/ |
 | The un-suffixed official Python tags (`3.13-slim`, `3-slim`, `slim`) are Debian 13 (trixie); Debian 12 is only under explicit `-bookworm` tags. | Verified 2026-10-20 | https://github.com/docker-library/official-images, `library/python` |
+| `python:3.13-slim` reports SQLite 3.46.1, and `jsonb()` works in it. | Measured 2026-10-20 | `docker run` on the workstation, image digest `sha256:70729b46c69b...` |
 | Node 22's built-in `node:sqlite` module bundles its own SQLite, independent of the operating system: 3.51.3 in Node 22.23.2. It is marked experimental. | Measured 2026-10-20 | local, on the workstation |
 | The full-text module's default tokenizer does not split Chinese, Japanese or Korean text into words; a trigram tokenizer exists. | Assumed (well known) | https://sqlite.org/fts5.html |
 

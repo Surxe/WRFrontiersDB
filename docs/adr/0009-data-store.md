@@ -120,14 +120,21 @@ The schema uses SQLite's binary JSON format (ADR-0010), which needs version 3.45
 newer. Both machines have 3.46.1, but the version that matters is the one inside each
 container image and each tool that touches the file:
 
-- Python uses the SQLite the image's operating system provides; official Python images
-  based on Debian 12 carry 3.40, which is too old (assumed, to be checked);
+- Python uses the SQLite the image's operating system provides. The default official
+  Python images are Debian 13 and carry 3.46.1, with JSONB working (measured
+  2026-10-20); only the explicit `-bookworm` (Debian 12) tags carry 3.40.1, which is
+  too old (`docs/research/external-facts.md`);
 - the Site build reads the file from Node, through either Node's built-in module or a
   package that bundles its own SQLite;
 - `sqldiff` and the `sqlite3` shell come from operating-system packages.
 
 A minimum version should be stated, checked at start-up by every reader, and tested in
 CI.
+
+**Proposed default:** minimum SQLite 3.45. Python images name the Debian release
+explicitly (`python:3.13-slim-trixie`, not the floating `slim` tag). Every program that
+opens the file checks that `jsonb()` works at start-up and refuses to run otherwise,
+and CI runs that check inside each built image.
 
 ### G-0009-2. Binary JSON or text JSON for stored documents
 
