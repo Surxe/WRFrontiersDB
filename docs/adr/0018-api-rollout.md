@@ -117,6 +117,11 @@ Deferred for the API, but `/v1/meta`'s third job is to prove a swap was picked u
 the bot needs the same mechanism in wave 1. So this cannot wait for wave 2. See
 ADR-0009, G-0009-4.
 
+**Resolved 2026-10-20:** Decided in ADR-0009, G-0009-4: the pipeline calls an
+internal-only reload endpoint on the API and the bot after repointing `current`, and
+confirms the new release through `/v1/meta` and the bot's equivalent. This settles the
+"restart or reload" item that decision 4 deferred.
+
 ### G-0018-4. What triggers waves 2 and 3
 
 - **Kind:** decision

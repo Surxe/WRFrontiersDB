@@ -14,7 +14,8 @@ starts calling the API from the browser. A data release then switches two things
 separately, each atomically on its own:
 
 - the Site, by a Cloudflare deploy;
-- the API, by picking up the repointed `current` database (G-0009-4).
+- the API, when the pipeline repoints `current` and calls its internal reload
+  endpoint (G-0009-4).
 
 Between the two, and in browser tabs opened before the swap, pages built from one
 release call an API serving another.
@@ -26,10 +27,10 @@ release call an API serving another.
    deploy and cannot disagree with the pages; only what the API serves can. The split
    is a separate discussion.
 2. **One ordered promotion:** deploy the Site, wait until it is live, then repoint
-   `current` (G-0009-4). API results link to pages, so pages exist before the API can
-   link to them. In the gap the API still answers from the previous release; at worst
-   a result links to a page the patch removed. Accepted as harmless: it lasts until
-   the API's next check of `current`, and nothing persists.
+   `current` and call the API's reload endpoint (G-0009-4). API results link to pages,
+   so pages exist before the API can link to them. In the gap the API still answers
+   from the previous release; at worst a result links to a page the patch removed.
+   Accepted as harmless: it lasts about a second, and nothing persists.
 3. **The cache follows the swap.** If Cloudflare caches API responses, promotion purges
    that cache right after repointing `current`.
 

@@ -207,19 +207,42 @@ answer in the first wave.
 - Services mount the directory read-only, never the file.
 - The database is built in the default rollback-journal mode, not WAL, and readers open
   it as `file:.../current?mode=ro&immutable=1`: read-only, no locking, no side files.
-- The bot and the API notice a swap with a periodic check of where `current` points,
-  at a short interval (seconds, not the bot's current 10 minutes), reopen when it
-  changes, and report the release they have open (the API through `/v1/meta`).
-  A restart remains the fallback.
-- Promotion is one ordered step: deploy the Site and wait until it is live, then
-  repoint `current`, then (once the API's responses are cached) purge that cache.
-  The Site's own pickup is its redeploy; it holds no database open in service.
+- **The pipeline tells the services.** The API and the bot each expose an internal
+  reload endpoint (for example `POST /internal/reload`) on the Compose network only,
+  never routed through the Cloudflare tunnel. On a call, the service opens the file
+  `current` now points at, switches to it, and closes the old one once requests in
+  flight have finished. The bot gains a minimal HTTP listener for this.
+- Each service reports the release it has open (the API through `/v1/meta`, the bot
+  through an equivalent internal endpoint).
+- **Promotion is one ordered step**, run by the pipeline: deploy the Site and wait until
+  it is live; repoint `current`; call each service's reload endpoint in the same
+  environment (staging and production are separate Compose projects); confirm each
+  reports the new release; then, once the API's responses are cached, purge that
+  cache. A failed reload or confirmation is reported in the run report (ADR-0024).
+- A service always opens `current` when it starts, so a restart is the fallback for a
+  missed reload. No polling.
+- The Site's own pickup is its redeploy; it holds no database open in service.
 
-In the gap between the Site going live and the API picking up the swap, API answers
-come from the previous release: at worst a result links to a page the patch removed.
-That was accepted as harmless. How the Site and the API stay consistent once the Site
-uses the API (wave 3) is a future idea
+Between the Site going live and the reload calls, API answers come from the previous
+release: at worst a result links to a page the patch removed, for about a second.
+Nothing breaks and nothing persists; this was accepted. How the Site and the API stay
+consistent once the Site uses the API (wave 3) is a future idea
 ([`../future-ideas/site-api-swap-consistency.md`](../future-ideas/site-api-swap-consistency.md)).
+
+Alternatives considered for how services notice the swap:
+
+- **Periodic check of `current`** (the bot polls every 10 minutes today). Rejected: the
+  services lag the Site by up to the interval.
+- **Resolving `current` on every request**, the way a static host serves files.
+  Instant and simple, but adds a lookup to every request. Not chosen.
+- **Watching the directory** (inotify). Instant, no coupling, but the pipeline cannot
+  confirm the pickup as part of promotion. Not chosen.
+- **Signalling through Docker** (`docker kill -s HUP`, `docker compose exec`). Rejected:
+  it needs the Docker socket, which is root on the guest, inside a pipeline that runs
+  third-party code (Proton, the game, DepotDownloader, CUE4Parse).
+
+**Resolved 2026-10-20:** The proposed default is accepted, with the internal reload
+endpoint called by the pipeline.
 
 ### G-0009-5. The swap is not atomic across consumers
 

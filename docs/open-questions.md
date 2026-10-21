@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 189. Resolved: 12.
+Open: 187. Resolved: 14.
 
 ## Counts
 
@@ -19,7 +19,7 @@ Open: 189. Resolved: 12.
 |---|---|
 | decision | 60 |
 | verification | 32 |
-| design | 82 |
+| design | 80 |
 | action | 15 |
 
 ## By ADR
@@ -128,7 +128,6 @@ Open: 189. Resolved: 12.
 
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
-| [G-0009-4](adr/0009-data-store.md) | design | phase 3 | How the swap works, and how readers notice |
 | [G-0009-5](adr/0009-data-store.md) | design | phase 3 | The swap is not atomic across consumers |
 | [G-0009-6](adr/0009-data-store.md) | design | phase 4 | Data the browser fetches at run time |
 | [G-0009-7](adr/0009-data-store.md) | decision | phase 4 | What "no public dataset" means |
@@ -242,7 +241,6 @@ Open: 189. Resolved: 12.
 |---|---|---|---|
 | [G-0018-1](adr/0018-api-rollout.md) | decision | phase 3 | A hostname is needed now |
 | [G-0018-2](adr/0018-api-rollout.md) | decision | phase 3 | Who can reach the placeholder |
-| [G-0018-3](adr/0018-api-rollout.md) | design | phase 3 | Picking up a new database |
 | [G-0018-4](adr/0018-api-rollout.md) | decision | not scheduled | What triggers waves 2 and 3 |
 | [G-0018-5](adr/0018-api-rollout.md) | design | wave 2 | The bot's query rules as an API |
 | [G-0018-6](adr/0018-api-rollout.md) | design | wave 2 | Versioning the API |
@@ -352,5 +350,7 @@ Open: 189. Resolved: 12.
 | [G-0009-1](adr/0009-data-store.md) | 2026-10-20 | Which SQLite versions must be supported |
 | [G-0009-2](adr/0009-data-store.md) | 2026-10-20 | Binary JSON or text JSON for stored documents |
 | [G-0009-3](adr/0009-data-store.md) | 2026-10-20 | What `sqldiff` can and cannot show |
+| [G-0009-4](adr/0009-data-store.md) | 2026-10-20 | How the swap works, and how readers notice |
 | [G-0015-6](adr/0015-data-releases-and-db-archive.md) | 2026-10-20 | Comparing two archived databases |
+| [G-0018-3](adr/0018-api-rollout.md) | 2026-10-20 | Picking up a new database |
 | [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | 2026-10-19 | The domain has email forwarding records |
