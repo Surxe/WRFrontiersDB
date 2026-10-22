@@ -60,8 +60,9 @@ Independent of each other and of everything else.
 - [ ] **DNS move** to Cloudflare (ADR-0019). Email forwarding checked: none in use
       (G-0019-1, resolved); write the record list and the way back (G-0019-2); start
       `docs/cloudflare.md` (G-0023-6).
-- [ ] **Pipeline memory investigation** (G-0006-3). Handed to a separate session;
-      result outstanding.
+- [x] **Pipeline memory investigation** (G-0006-3). Done 2026-10-21: fits 2.5 GiB
+      with 1.5 GiB of swap; the peak is the Parser's model step (G-0006-11)
+      (`docs/research/2026-10-pipeline-memory.md`).
 - [x] Parser fixes for dangling currency references and a missing localization key
       (done in the old Parser repository, 2026-10-10).
 - [x] Valheim VM reduced to 3.5 GiB, not the planned 3 GiB (done outside this project;

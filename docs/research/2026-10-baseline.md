@@ -194,6 +194,16 @@ The memory figure is the control-group peak, which includes file cache. How much
 real process memory was not measured. Other units are small: bot about 65 MB, probe and
 discount watch under 55 MB each.
 
+*Update 2026-10-21:* the real requirement has now been measured
+(`docs/research/2026-10-pipeline-memory.md`): about 2.8 GiB of anonymous memory at the
+peak, from the Parser's model step, on every run; the rest of the pipeline stays under
+1.4 GiB. Under a 2.5 GiB cap a forced full run finished with 0.9 GiB of swap. Two
+corrections to the table: these runs predate the 2026-10-14 change that starts the
+export in its own user scope, so from then on the journal's figure for the pipeline
+unit leaves the export out (the 2026-10-20 run logged 3.1 GB plus 1.1 GB of swap
+without it); and the swap figures include pages the kernel moved out under host-wide
+pressure, not only the pipeline's own need.
+
 ### 3.2 Working data on the server (measured 2026-10-12)
 
 | Path under the data volume | Size | Notes |
