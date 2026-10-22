@@ -246,6 +246,11 @@ Valheim's documented rollback is 4 GiB, which would cut the WRF budget to about
 2 GiB. So the WRF budget is more likely to shrink than to grow (source:
 `valheim-server` repository, pull requests #10 and #11).
 
+**Resolved 2026-10-21:** two players is the most who play on the server today, so the
+two-player measurement is the load to plan for, and six players is out of scope. The VM
+stays at 3.5 GiB, and the WRF guest's 2 GiB (decision 2) fits the budget that leaves,
+even if Valheim had to go back to 4 GiB. Revisit if the player count grows.
+
 ### G-0006-9. When to move the API and bot to a rented server
 
 - **Kind:** decision
