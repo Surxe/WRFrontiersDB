@@ -15,7 +15,7 @@ leaves room for Valheim's 4 GiB fallback (G-0006-8).
 **Update, same day: the rework, measured.** Parser PR #136 writes each model as it is
 built. The parse's peak anon fell from 2,786 to 191 MiB, with identical output. Under a
 hard 2 GiB limit and 0.5 GiB of swap the forced run finished in 679 s, with 43 MiB of
-swap. Once it merges, the guest can be **2 GiB with 0.5 GiB swap**. See "After the
+swap. It merged the same day, so the guest is **2 GiB with 0.5 GiB swap**. See "After the
 rework" below.
 
 ## Earlier work this builds on
@@ -35,7 +35,7 @@ rework" below.
 
 ## Method
 
-- **Tool:** `WRFrontiersDB-Orchestrator/bin/measure-memory` (branch `measure-memory`). It runs the command in a transient systemd user slice. Once a second it
+- **Tool:** `WRFrontiersDB-Orchestrator/bin/measure-memory` (never merged; the code is in the closed Orchestrator PR #46). It runs the command in a transient systemd user slice. Once a second it
   samples `memory.current`, `memory.stat` (anon, file, shmem, kernel, file_dirty,
   file_writeback, ...), `memory.swap.current`, `memory.events` and `memory.pressure`,
   plus host `/proc/meminfo` and the Valheim VM's (VM 100) QEMU RSS and swap. At the end
@@ -200,6 +200,17 @@ The main checkout was not touched. Two runs, with the same flags as above:
 and the export file list and sizes were unchanged. The mapper (the game under Wine,
 about 1.45 GiB anon) is now the peak; it leaves about 0.5 GiB of headroom under 2 GiB.
 
+**Cross-check with plain systemd.** Later checks need no tool: `systemd-run --user
+--wait` prints a unit's memory peak and swap peak (Orchestrator README, "Checking a
+run's memory"). It counts file cache and leaves out the Exporter's own scope, so it
+is a pass/fail test under a limit, not a breakdown. Two no-force runs on the merged
+Parser agreed with the sampler:
+
+| No-force run | `systemd-run --wait` | `bin/measure-memory` |
+|---|---|---|
+| Uncapped | peak 3.2G, swap 0, 98 s | memory.peak 3,240 MiB, swap 0, 100 s |
+| `MemoryMax=2048M`, `MemorySwapMax=512M` | success, peak 2G, swap 0, 106 s | (forced run: no OOM, 43 MiB swap) |
+
 ## Valheim and the host during the runs
 
 - Valheim VM RSS: 1.9 to 2.2 GiB with 0 players. Its host-side swap grew from 1.43 to
@@ -214,7 +225,7 @@ about 1.45 GiB anon) is now the peak; it leaves about 0.5 GiB of headroom under 
 
 | | Memory | Swap | Why |
 |---|---|---|---|
-| **Now (code as is)** | **2.5 GiB** | **1.5 GiB** | Measured: finishes with 0.9 GiB swap, about +35 s. 1.5 GiB leaves about 0.6 GiB of margin for a patch that adds models (the step grows with the model count). |
+| Before the rework | 2.5 GiB | 1.5 GiB | Measured: finishes with 0.9 GiB swap, about +35 s. 1.5 GiB leaves about 0.6 GiB of margin for a patch that adds models (the step grows with the model count). |
 | If Valheim goes to 4 GiB first | 2 GiB | 1.5 GiB | Measured: finishes with 1.2 GiB swap, +9%. Tight margin; do the Parser rework first. |
 | **After the `parse_models` rework** | **2 GiB** | **0.5 GiB** | Measured (see "After the rework"): finishes under a hard 2 GiB limit with 43 MiB swap; peak anon 1.45 GiB (mapper). |
 
