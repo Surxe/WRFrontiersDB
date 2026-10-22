@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11 |
+| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
@@ -18,10 +18,11 @@ virtual machine that hosts a Valheim game server.
 The constraints that shaped the decision:
 
 - **Memory is the scarce resource.** The machine has 7.1 GiB. The Valheim VM holds a
-  fixed share whether it uses it or not. The patch-day pipeline has peaked at 2.6 to
-  4.2 GB plus up to 1.7 GB of swap (baseline, section 3.1), and today nothing limits
-  it. If the host runs out, the kernel kills the largest process, which is the Valheim
-  VM.
+  fixed share whether it uses it or not. The patch-day pipeline needs about 2.8 GiB of
+  real (anonymous) memory at its peak, for under a minute, in one Parser step; every
+  other stage stays under 1.4 GiB (`docs/research/2026-10-pipeline-memory.md`). Today
+  nothing limits it. If the host runs out, the kernel kills the largest process, which
+  is the Valheim VM.
 - **The pipeline needs a GPU.** The Exporter's mapper step launches the game under
   Proton and needs a working Vulkan driver (baseline, section 2.3). The laptop has one
   integrated GPU.
@@ -46,8 +47,10 @@ A principle was agreed first, and used to settle several later questions:
 1. **All WRF workloads move into one Proxmox guest**: the API, the bot, the pipeline and
    its scheduled jobs. The host becomes hypervisor and backups only.
 2. **That guest is an unprivileged Linux container (LXC), not a virtual machine**,
-   with a memory limit of about 2.5 GiB. The exact figure waits for the pipeline memory
-   investigation (G-0006-3).
+   with a memory limit of 2.5 GiB and a swap allowance of 1.5 GiB (G-0006-3, measured
+   2026-10-21). Once the Parser's model step stops holding every model in memory
+   (G-0006-11, Parser PR #136), it drops to 2 GiB with 0.5 GiB of swap: with that
+   change, a run under a hard 2 GiB limit used 43 MiB of swap.
 3. **Inside the guest, the workloads run as Docker containers under Docker Compose**
    (ADR-0007), the same way they run on the workstation.
 4. **The Valheim VM is reduced from 4 GiB to a fixed 3.5 GiB**, keeping its swap file.
@@ -161,6 +164,26 @@ guest's swap allowance, and whether any stage needs rework are all open. If the
 pipeline cannot fit, the options include raising the limit only while it runs, or
 moving the heaviest stage to the workstation.
 
+**Resolved 2026-10-21:** it fits, with swap. Measured on the server by re-running the
+2026-10-20 patch with the mapper, the full export and all map cooking forced, Valheim
+up, in a control group that also held the export's own scope
+(`docs/research/2026-10-pipeline-memory.md`):
+
+1. **Real need:** about 2.8 GiB of anonymous memory at the peak, from the Parser's
+   model step (`parse_models`), which keeps every module's mesh as Python lists until
+   it has extracted all of them. It is reached on every run, including a no-change
+   re-run. Everything else stays under 1.4 GiB: the mapper about 1.4, the export about
+   1.1 (inside its own 1.5 GiB cap), map cooking about 1.15, the Site build about 0.9.
+2. **Under a 2.5 GiB cap** the run finished with identical output, no out-of-memory
+   events, 0.9 GiB of swap, and the parse about a third slower (whole run +3%).
+   **Under 2 GiB** it also finished, with 1.2 GiB of swap (whole run +9%).
+3. **Limit:** 2.5 GiB with 1.5 GiB of swap (decision 2). Of the options above, the
+   result points to **reworking that stage**, not raising the limit while the pipeline
+   runs or moving a stage to the workstation (G-0006-11).
+4. Not measured: the Steam download, Valheim with players (G-0006-8), Docker and the
+   other services inside the guest, and Proxmox's own hard limit in place of the
+   throttling limit used here. Spike 3 confirms the figure inside the real guest.
+
 ### G-0006-4. File ownership across the container boundary
 
 - **Kind:** design
@@ -241,8 +264,29 @@ Proxmox or Docker upgrade can break production. No policy says when upgrades are
 applied or how they are tested first (staging runs in the same guest, so it shares the
 same Docker).
 
+### G-0006-11. The Parser's model step holds every model in memory
+
+- **Kind:** action
+- **Needed by:** before the WRF guest drops below 2.5 GiB, or if Valheim needs 4 GiB
+  (G-0006-8)
+
+`parse_models` builds all 265 module models, with their vertex and index arrays
+turned into Python lists, before writing any of them: 417 MB of JSON on disk, about
+2.1 GiB in memory. It is the only step over 1.4 GiB (G-0006-3). Writing each model as
+soon as it is extracted should bring the parse down to about 1 GiB and the whole run to
+about 1.4 GiB; that is an estimate and has to be re-measured with
+`WRFrontiersDB-Orchestrator/bin/measure-memory`.
+
+**Fix measured 2026-10-21** (Parser PR #136, open until it merges): each model is now
+written and dropped as it is built. The parse's peak anon fell from 2,786 to 191 MiB,
+with byte-identical output. A forced run under a hard 2 GiB limit (`MemoryMax=2048M`,
+`MemorySwapMax=512M`, as the container would apply) finished in 679 s with 43 MiB of
+swap and no out-of-memory events. The heaviest stage is now the mapper, about 1.45 GiB
+anon.
+
 ## References
 
 - `docs/research/2026-10-baseline.md`, sections 2.3 and 3.
+- `docs/research/2026-10-pipeline-memory.md` (G-0006-3).
 - `docs/research/external-facts.md`, "Proxmox, LXC and Docker".
 - Proxmox container documentation: https://pve.proxmox.com/pve-docs/pct.1.html
