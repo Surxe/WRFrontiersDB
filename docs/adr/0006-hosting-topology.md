@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21 |
+| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
@@ -108,7 +108,8 @@ Valheim it was about 3 GiB.)
   combination did not reproduce on the server's versions (G-0006-1), but could return
   with an update (G-0006-10).
 - The Exporter, the hardest thing to containerise in the whole system, now has to run
-  inside two layers of containers with GPU access (G-0006-2).
+  inside two layers of containers with GPU access. Its mapper was shown to work there,
+  given a seccomp profile that lets Steam's runtime create namespaces (G-0006-2).
 - Availability of the bot and the API is that of one laptop on home wifi. This was
   accepted; the websites do not share it.
 - Guests cannot be reached directly from the workstation, only through the host. This
@@ -166,6 +167,34 @@ The decision already calls for a trial before cutover. It should be planned as a
 risk, with fallbacks named in advance: run the Exporter directly in the guest (not in
 Docker), or leave the Exporter on the host and let the rest of the pipeline run in the
 guest. Either fallback changes ADR-0007 and ADR-0016.
+
+**Resolved 2026-10-21:** it works, and neither fallback is needed. In a throwaway
+unprivileged guest at the planned 2 GiB and 0.5 GiB swap, with the GPU's two device
+nodes passed in (`dev0`/`dev1`, no raw LXC options), a Docker image mirroring
+`home-server`'s `wrf-gpu/install.sh` ran the Exporter's mapper unchanged on a copy of
+the 2026-10-20 game files (`docs/research/2026-10-mapper-in-container.md`):
+
+1. RADV saw the integrated GPU through both layers, and gamescope's headless backend
+   started without a login session.
+2. Steam's runtime (`pressure-vessel`, through `bwrap`) needs user and mount namespaces,
+   which Docker's default seccomp profile blocks. The container needs that profile plus
+   `unshare`, `setns`, `mount`, `umount2`, `pivot_root` and `clone`. It does not need
+   to be privileged, extra capabilities, or AppArmor turned off.
+3. The mapper took 14 to 20 s (14 to 46 s on the host). The mapping file is not
+   byte-identical between runs, on the host either, because UE4SS writes records in the
+   engine's order. Decoded and re-keyed by name, all of it (including UE4SS's
+   extensions) matched production.
+4. Mesa is pinned to 26.1.6 from backports, the version the test ran on (the host has
+   25.0.7 from main, which does not resolve with umu-launcher once gamescope comes
+   from backports). Decided 2026-10-22.
+5. Production needs `~/.local/share/umu` (Steam's runtime, 797 MB) on a persistent
+   volume. That is a re-downloadable cache, so it belongs on the data volume like
+   Proton and the Wine prefix (ADR-0007 decision 3, ADR-0023 decision 4). It must be
+   mounted on its own, not as the whole home directory, which also holds
+   DepotDownloader's remembered login, a secret (G-0022-2).
+
+Not covered: the Steam download and the export inside the container, and the live data
+volume's ownership mapping (G-0006-4).
 
 ### G-0006-3. Whether the pipeline fits in the limit
 
@@ -311,5 +340,6 @@ cache, as measured before, and success under the 2 GiB limit with no swap.
 
 - `docs/research/2026-10-baseline.md`, sections 2.3 and 3.
 - `docs/research/2026-10-pipeline-memory.md` (G-0006-3).
+- `docs/research/2026-10-mapper-in-container.md` (G-0006-2).
 - `docs/research/external-facts.md`, "Proxmox, LXC and Docker".
 - Proxmox container documentation: https://pve.proxmox.com/pve-docs/pct.1.html
