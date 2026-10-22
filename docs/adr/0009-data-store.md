@@ -4,7 +4,7 @@
 |---|---|
 | Status | Accepted |
 | Decided | 2026-10-08 (database instead of the Data repository, SQLite, build and swap, no public dataset) |
-| Record state | Draft for maintainer review |
+| Record state | Reviewed |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0010 (schema), ADR-0012 (state), ADR-0014 (swap gate), ADR-0015 (archive), ADR-0018 (API), ADR-0020 (assets) |
 
