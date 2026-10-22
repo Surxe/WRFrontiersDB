@@ -18,9 +18,10 @@ virtual machine that hosts a Valheim game server.
 The constraints that shaped the decision:
 
 - **Memory is the scarce resource.** The machine has 7.1 GiB. The Valheim VM holds a
-  fixed share whether it uses it or not. The patch-day pipeline needs about 2.8 GiB of
-  real (anonymous) memory at its peak, for under a minute, in one Parser step; every
-  other stage stays under 1.4 GiB (`docs/research/2026-10-pipeline-memory.md`). Today
+  fixed share whether it uses it or not. The patch-day pipeline needed about 2.8 GiB of
+  real (anonymous) memory at its peak, in one Parser step. Since that step was fixed
+  (G-0006-11) every stage stays under about 1.45 GiB, the mapper being the largest
+  (`docs/research/2026-10-pipeline-memory.md`). Today
   nothing limits it. If the host runs out, the kernel kills the largest process, which
   is the Valheim VM.
 - **The pipeline needs a GPU.** The Exporter's mapper step launches the game under
@@ -47,10 +48,9 @@ A principle was agreed first, and used to settle several later questions:
 1. **All WRF workloads move into one Proxmox guest**: the API, the bot, the pipeline and
    its scheduled jobs. The host becomes hypervisor and backups only.
 2. **That guest is an unprivileged Linux container (LXC), not a virtual machine**,
-   with a memory limit of 2.5 GiB and a swap allowance of 1.5 GiB (G-0006-3, measured
-   2026-10-21). Once the Parser's model step stops holding every model in memory
-   (G-0006-11, Parser PR #136), it drops to 2 GiB with 0.5 GiB of swap: with that
-   change, a run under a hard 2 GiB limit used 43 MiB of swap.
+   with a memory limit of 2 GiB and a swap allowance of 0.5 GiB (G-0006-3 and
+   G-0006-11, measured 2026-10-21): a forced run under that hard limit used 43 MiB of
+   swap. Before the Parser fix it needed 2.5 GiB with 1.5 GiB of swap.
 3. **Inside the guest, the workloads run as Docker containers under Docker Compose**
    (ADR-0007), the same way they run on the workstation.
 4. **The Valheim VM is reduced from 4 GiB to a fixed 3.5 GiB**, keeping its swap file.
@@ -177,7 +177,8 @@ up, in a control group that also held the export's own scope
 2. **Under a 2.5 GiB cap** the run finished with identical output, no out-of-memory
    events, 0.9 GiB of swap, and the parse about a third slower (whole run +3%).
    **Under 2 GiB** it also finished, with 1.2 GiB of swap (whole run +9%).
-3. **Limit:** 2.5 GiB with 1.5 GiB of swap (decision 2). Of the options above, the
+3. **Limit:** 2.5 GiB with 1.5 GiB of swap for the code as measured; 2 GiB with
+   0.5 GiB once the stage was reworked (decision 2, G-0006-11). Of the options above, the
    result points to **reworking that stage**, not raising the limit while the pipeline
    runs or moving a stage to the workstation (G-0006-11).
 4. Not measured: the Steam download, Valheim with players (G-0006-8), Docker and the
@@ -274,15 +275,16 @@ same Docker).
 turned into Python lists, before writing any of them: 417 MB of JSON on disk, about
 2.1 GiB in memory. It is the only step over 1.4 GiB (G-0006-3). Writing each model as
 soon as it is extracted should bring the parse down to about 1 GiB and the whole run to
-about 1.4 GiB; that is an estimate and has to be re-measured with
-`WRFrontiersDB-Orchestrator/bin/measure-memory`.
+about 1.4 GiB; that is an estimate and has to be re-measured.
 
-**Fix measured 2026-10-21** (Parser PR #136, open until it merges): each model is now
-written and dropped as it is built. The parse's peak anon fell from 2,786 to 191 MiB,
+**Resolved 2026-10-21:** Parser PR #136 (merged) writes each model and drops it as it
+is built. The parse's peak anon fell from 2,786 to 191 MiB,
 with byte-identical output. A forced run under a hard 2 GiB limit (`MemoryMax=2048M`,
 `MemorySwapMax=512M`, as the container would apply) finished in 679 s with 43 MiB of
 swap and no out-of-memory events. The heaviest stage is now the mapper, about 1.45 GiB
-anon.
+anon. A cross-check with plain `systemd-run --wait` on the merged Parser (no-force,
+Orchestrator README "Checking a run's memory") agreed: a 3.2G uncapped peak including
+cache, as measured before, and success under the 2 GiB limit with no swap.
 
 ## References
 

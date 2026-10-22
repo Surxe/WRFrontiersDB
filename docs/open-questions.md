@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 181. Resolved: 22.
+Open: 180. Resolved: 23.
 
 ## Counts
 
@@ -20,7 +20,7 @@ Open: 181. Resolved: 22.
 | decision | 58 |
 | verification | 31 |
 | design | 75 |
-| action | 17 |
+| action | 16 |
 
 ## By ADR
 
@@ -92,7 +92,6 @@ Open: 181. Resolved: 22.
 | [G-0006-8](adr/0006-hosting-topology.md) | verification | before the WRF guest's limit is finalised | Valheim's memory under load |
 | [G-0006-9](adr/0006-hosting-topology.md) | decision | not scheduled | When to move the API and bot to a rented server |
 | [G-0006-10](adr/0006-hosting-topology.md) | decision | after cutover | Host upgrades |
-| [G-0006-11](adr/0006-hosting-topology.md) | action | before the WRF guest drops below 2.5 GiB, or if Valheim needs 4 GiB | The Parser's model step holds every model in memory |
 
 ### ADR-0007: Containers, images and deployment
 
@@ -342,6 +341,7 @@ Open: 181. Resolved: 22.
 | [G-0002-8](adr/0002-one-repository.md) | 2026-10-19 | Whether Design has other consumers |
 | [G-0003-3](adr/0003-repository-layout.md) | 2026-10-19 | One Astro version, one screenshot tool |
 | [G-0006-3](adr/0006-hosting-topology.md) | 2026-10-21 | Whether the pipeline fits in the limit |
+| [G-0006-11](adr/0006-hosting-topology.md) | 2026-10-21 | The Parser's model step holds every model in memory |
 | [G-0009-1](adr/0009-data-store.md) | 2026-10-20 | Which SQLite versions must be supported |
 | [G-0009-2](adr/0009-data-store.md) | 2026-10-20 | Binary JSON or text JSON for stored documents |
 | [G-0009-3](adr/0009-data-store.md) | 2026-10-20 | What `sqldiff` can and cannot show |
