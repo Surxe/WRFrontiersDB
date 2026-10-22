@@ -134,7 +134,9 @@ Mostly in parallel with phase 2. **The three spikes come first** (G-0025-3).
 - [x] **Spike 1:** create the guest; run a Docker container in it (G-0006-1). Done
       2026-10-21: Docker and Compose work in an unprivileged container with nesting,
       AppArmor left on; the reported breakage does not occur on these versions.
-- [ ] **Spike 2:** run the Exporter's mapper inside it (G-0006-2).
+- [x] **Spike 2:** run the Exporter's mapper inside it (G-0006-2). Done 2026-10-21:
+      works in Docker in the guest with the GPU passed in and a seccomp profile that
+      allows namespaces; output matches production.
 - [ ] **Spike 3:** run the pipeline under the memory limit (G-0006-3).
 - [ ] In the `home-server` repository: the guest (unprivileged, memory limit, start on
       boot: G-0006-7), GPU access, the shared data volume and its ownership mapping
