@@ -72,8 +72,8 @@ docker run --rm --security-opt seccomp=seccomp-bwrap.json \
 
 On first use, umu-launcher downloaded Steam's runtime (`steamrt3`, 797 MB) into
 `~/.local/share/umu`. In production that directory must be on a persistent volume, or
-every run downloads it again. No ADR places it yet. It is a re-downloadable cache like
-Proton and the Wine prefix, so the data volume fits (ADR-0007 decision 3; ADR-0023
+every run downloads it again. **Decision (2026-10-22): it goes on the data volume.** It
+is a re-downloadable cache like Proton and the Wine prefix (ADR-0007 decision 3; ADR-0023
 decision 4, not backed up). It must not share a volume with DepotDownloader's remembered
 Steam login, which also sits in the home directory but is a secret (G-0022-2). So mount
 the umu directory alone, not the whole home directory.

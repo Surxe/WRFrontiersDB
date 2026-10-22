@@ -191,7 +191,7 @@ the 2026-10-20 game files (`docs/research/2026-10-mapper-in-container.md`):
    volume. That is a re-downloadable cache, so it belongs on the data volume like
    Proton and the Wine prefix (ADR-0007 decision 3, ADR-0023 decision 4). It must be
    mounted on its own, not as the whole home directory, which also holds
-   DepotDownloader's remembered login, a secret (G-0022-2).
+   DepotDownloader's remembered login, a secret (G-0022-2). Decided 2026-10-22.
 
 Not covered: the Steam download and the export inside the container, and the live data
 volume's ownership mapping (G-0006-4).
