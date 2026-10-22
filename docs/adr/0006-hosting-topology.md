@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21 |
+| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
@@ -104,8 +104,9 @@ Valheim it was about 3 GiB.)
 - Production and local development run the same containers from the same Compose file.
 - The WRF guest can be backed up, restored and eventually moved as a unit (ADR-0023).
 - Docker inside a container is a less-travelled path than Docker inside a VM. Proxmox's
-  own guidance prefers the VM for isolation, and there is a current, reported breakage
-  on this exact combination (G-0006-1).
+  own guidance prefers the VM for isolation, and a reported breakage on this
+  combination did not reproduce on the server's versions (G-0006-1), but could return
+  with an update (G-0006-10).
 - The Exporter, the hardest thing to containerise in the whole system, now has to run
   inside two layers of containers with GPU access (G-0006-2).
 - Availability of the bot and the API is that of one laptop on home wifi. This was
@@ -132,6 +133,21 @@ fails without the workaround, the choices are: accept the workaround; use a virt
 machine after all and solve memory differently (for example by starting the pipeline
 VM only on demand); or run the services without Docker inside the guest, at the cost
 of the "same as local" principle.
+
+**Resolved 2026-10-21:** not affected. Spike on the server (pve-manager 9.2.2, kernel
+7.0.2-6-pve, lxc-pve 7.0.0-2): a throwaway unprivileged Debian 13 container with
+`nesting=1,keyctl=1` and no AppArmor or `lxc.*` overrides in its config, Docker from
+Docker's own repository (docker-ce 29.9.2, containerd.io 2.4.2, runc 1.5.2, overlayfs,
+cgroup v2). `hello-world`, an `alpine` container reading
+`net.ipv4.ip_unprivileged_port_start` (the sysctl in the reported error), an `nginx`
+container with a published port answering HTTP 200, and a one-service `docker compose
+up` all worked. The container stayed confined by its generated AppArmor profile in
+enforce mode, and the kernel logged no denials from it. (Inside it, Docker reports no
+AppArmor support, so it does not give its own containers a profile; the outer profile is
+the boundary, as intended.) So the workaround is not needed
+and the unprivileged container stands. Not covered: GPU passthrough (G-0006-2), memory
+under the real limit (spike 3), and future package updates, which can bring it back
+(G-0006-10).
 
 ### G-0006-2. The Exporter's mapper inside Docker inside the guest
 

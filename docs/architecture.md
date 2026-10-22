@@ -167,8 +167,8 @@ is running.
 
 For a reader deciding where to look first. Each is a gap in an ADR.
 
-1. Whether Docker, and then the Exporter's game-launching step, work inside the
-   container guest at all (ADR-0006, G-0006-1 and G-0006-2).
+1. Whether the Exporter's game-launching step works inside the container guest
+   (ADR-0006, G-0006-2). Docker itself was verified there (G-0006-1).
 2. Whether the pipeline fits in the guest's memory limit (ADR-0006, G-0006-3).
 3. How the pipeline can run a release tag's code while reading and committing the
    latest state (ADR-0012, G-0012-1; ADR-0016, G-0016-1 and G-0016-2).
