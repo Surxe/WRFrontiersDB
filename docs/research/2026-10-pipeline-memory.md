@@ -12,6 +12,12 @@ memory. That is a small change and should bring the peak down to about 1.4 GiB (
 estimate, see below). After it, the guest can drop to 2 GiB with 0.5 GiB swap, which
 leaves room for Valheim's 4 GiB fallback (G-0006-8).
 
+**Update, same day: the rework, measured.** Parser PR #136 writes each model as it is
+built. The parse's peak anon fell from 2,786 to 191 MiB, with identical output. Under a
+hard 2 GiB limit and 0.5 GiB of swap the forced run finished in 679 s, with 43 MiB of
+swap. Once it merges, the guest can be **2 GiB with 0.5 GiB swap**. See "After the
+rework" below.
+
 ## Earlier work this builds on
 
 - No report from the earlier G-0006-3 hand-off was found: nothing in `/srv/dev/scratch`,
@@ -165,6 +171,35 @@ The export is **not** the problem. Its anon stays at or below 1.1 GiB inside its
 1536M scope. Its high memory.current is page cache from the 13 GB pak set, and the
 kernel reclaims that freely.
 
+## After the rework (measured 2026-10-21)
+
+The Parser was run from the `WRFrontiersDB-Parser-dev` worktree, on branch
+`parse-models-stream` (PR #136), by pointing `--repos-dir` at a directory of symlinks.
+The main checkout was not touched. Two runs, with the same flags as above:
+
+- **No-force, uncapped:** 100 s. parse:objects peak anon **191 MiB** (was 2,786); the
+  parse step ran in 48 s (was 58). The heaviest stage of this run is the Site build
+  (592 MiB anon).
+- **Forced, `MemoryMax=2048M` and `MemorySwapMax=512M`** (a hard limit, as the
+  container applies, not the throttling `MemoryHigh` used above): **679 s**, slightly
+  faster than the old uncapped run (689 s). memory.swap.peak **43 MiB**, oom 0,
+  oom_kill 0. The 26,711 `max` events are page-cache reclaim at the limit.
+
+| Stage | Duration s | Peak anon | Peak anon+file | Peak swap |
+|---|---|---|---|---|
+| export:mapper | 12 | 1,446 | 1,997 | 33 |
+| export:cue4parse-assets | 86 | 403 | 1,950 | 25 |
+| export:cue4parse-meshes | 262 | 961 | 1,951 | 25 |
+| export:cue4parse-maps | 156 | 894 | 1,843 | 25 |
+| parse:objects | 56 | 184 | 1,970 | 13 |
+| parse:maps (12 cooked) | 46 | 804 | 2,017 | 13 |
+| parse:enrich | 3 | 269 | 1,714 | 13 |
+| site | 53 | 611 | 2,009 | 13 |
+
+`parsed/` and `textures/` were byte-identical to the 2026-10-20 output after both runs,
+and the export file list and sizes were unchanged. The mapper (the game under Wine,
+about 1.45 GiB anon) is now the peak; it leaves about 0.5 GiB of headroom under 2 GiB.
+
 ## Valheim and the host during the runs
 
 - Valheim VM RSS: 1.9 to 2.2 GiB with 0 players. Its host-side swap grew from 1.43 to
@@ -181,7 +216,7 @@ kernel reclaims that freely.
 |---|---|---|---|
 | **Now (code as is)** | **2.5 GiB** | **1.5 GiB** | Measured: finishes with 0.9 GiB swap, about +35 s. 1.5 GiB leaves about 0.6 GiB of margin for a patch that adds models (the step grows with the model count). |
 | If Valheim goes to 4 GiB first | 2 GiB | 1.5 GiB | Measured: finishes with 1.2 GiB swap, +9%. Tight margin; do the Parser rework first. |
-| **After the `parse_models` rework** | **2 GiB** | **0.5 GiB** | Estimated peak about 1.4 GiB anon (mapper). Remeasure before relying on it. |
+| **After the `parse_models` rework** | **2 GiB** | **0.5 GiB** | Measured (see "After the rework"): finishes under a hard 2 GiB limit with 43 MiB swap; peak anon 1.45 GiB (mapper). |
 
 Which of the ADR's options this points to: **rework that stage.** It is a small,
 local change and removes the only step over 1.4 GiB. "Raise the limit only while it
@@ -222,5 +257,8 @@ device.
 - Per-run summary, console log and orchestrator logs:
   `/srv/dev/scratch/g-0006-3-runs/<run>/summary.{md,json}`, `<run>.console.log`,
   `logs/<run>/`.
+- After the rework: `g-0006-11-pipeline-memory-noforce.csv` and
+  `-capped-2G-hard.csv` in `/srv/dev/scratch/`; runs, runner and the symlinked
+  repos directory in `/srv/dev/scratch/g-0006-11-runs/`.
 - Backups of the overwritten outputs: `/srv/dev/wrf/dev/g-0006-3-backup/` (safe to
   delete; the re-run reproduced them).

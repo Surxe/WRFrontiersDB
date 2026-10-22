@@ -61,7 +61,8 @@ Independent of each other and of everything else.
       (G-0019-1, resolved); write the record list and the way back (G-0019-2); start
       `docs/cloudflare.md` (G-0023-6).
 - [x] **Pipeline memory investigation** (G-0006-3). Done 2026-10-21: fits 2.5 GiB
-      with 1.5 GiB of swap; the peak is the Parser's model step (G-0006-11)
+      with 1.5 GiB of swap; the peak is the Parser's model step (G-0006-11, fixed
+      in Parser PR #136: 2 GiB with 0.5 GiB of swap once merged)
       (`docs/research/2026-10-pipeline-memory.md`).
 - [x] Parser fixes for dangling currency references and a missing localization key
       (done in the old Parser repository, 2026-10-10).

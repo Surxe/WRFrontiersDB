@@ -49,7 +49,8 @@ A principle was agreed first, and used to settle several later questions:
 2. **That guest is an unprivileged Linux container (LXC), not a virtual machine**,
    with a memory limit of 2.5 GiB and a swap allowance of 1.5 GiB (G-0006-3, measured
    2026-10-21). Once the Parser's model step stops holding every model in memory
-   (G-0006-11), the target is 2 GiB with 0.5 GiB of swap, re-measured first.
+   (G-0006-11, Parser PR #136), it drops to 2 GiB with 0.5 GiB of swap: with that
+   change, a run under a hard 2 GiB limit used 43 MiB of swap.
 3. **Inside the guest, the workloads run as Docker containers under Docker Compose**
    (ADR-0007), the same way they run on the workstation.
 4. **The Valheim VM is reduced from 4 GiB to a fixed 3.5 GiB**, keeping its swap file.
@@ -275,6 +276,13 @@ turned into Python lists, before writing any of them: 417 MB of JSON on disk, ab
 soon as it is extracted should bring the parse down to about 1 GiB and the whole run to
 about 1.4 GiB; that is an estimate and has to be re-measured with
 `WRFrontiersDB-Orchestrator/bin/measure-memory`.
+
+**Fix measured 2026-10-21** (Parser PR #136, open until it merges): each model is now
+written and dropped as it is built. The parse's peak anon fell from 2,786 to 191 MiB,
+with byte-identical output. A forced run under a hard 2 GiB limit (`MemoryMax=2048M`,
+`MemorySwapMax=512M`, as the container would apply) finished in 679 s with 43 MiB of
+swap and no out-of-memory events. The heaviest stage is now the mapper, about 1.45 GiB
+anon.
 
 ## References
 
