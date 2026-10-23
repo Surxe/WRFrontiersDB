@@ -11,14 +11,14 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 179. Resolved: 24.
+Open: 177. Resolved: 26.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
 | decision | 58 |
-| verification | 30 |
+| verification | 28 |
 | design | 75 |
 | action | 16 |
 
@@ -83,8 +83,6 @@ Open: 179. Resolved: 24.
 
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
-| [G-0006-1](adr/0006-hosting-topology.md) | verification | the start of phase 3; this is the first thing to try | Docker inside an unprivileged container on this Proxmox version |
-| [G-0006-2](adr/0006-hosting-topology.md) | verification | phase 3, before anything depends on the guest for patch days | The Exporter's mapper inside Docker inside the guest |
 | [G-0006-4](adr/0006-hosting-topology.md) | design | phase 3 | File ownership across the container boundary |
 | [G-0006-5](adr/0006-hosting-topology.md) | design | phase 3 | Where the guest's disk lives and how big it is |
 | [G-0006-6](adr/0006-hosting-topology.md) | decision | phase 3 | One mechanism for a service to get its database |
@@ -339,6 +337,8 @@ Open: 179. Resolved: 24.
 | [G-0002-6](adr/0002-one-repository.md) | 2026-10-19 | Open issues and pull requests in the old repositories |
 | [G-0002-8](adr/0002-one-repository.md) | 2026-10-19 | Whether Design has other consumers |
 | [G-0003-3](adr/0003-repository-layout.md) | 2026-10-19 | One Astro version, one screenshot tool |
+| [G-0006-1](adr/0006-hosting-topology.md) | 2026-10-21 | Docker inside an unprivileged container on this Proxmox version |
+| [G-0006-2](adr/0006-hosting-topology.md) | 2026-10-21 | The Exporter's mapper inside Docker inside the guest |
 | [G-0006-3](adr/0006-hosting-topology.md) | 2026-10-21 | Whether the pipeline fits in the limit |
 | [G-0006-8](adr/0006-hosting-topology.md) | 2026-10-21 | Valheim's memory under load |
 | [G-0006-11](adr/0006-hosting-topology.md) | 2026-10-21 | The Parser's model step holds every model in memory |

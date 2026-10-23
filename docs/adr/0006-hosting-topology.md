@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21 |
+| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
@@ -104,10 +104,12 @@ Valheim it was about 3 GiB.)
 - Production and local development run the same containers from the same Compose file.
 - The WRF guest can be backed up, restored and eventually moved as a unit (ADR-0023).
 - Docker inside a container is a less-travelled path than Docker inside a VM. Proxmox's
-  own guidance prefers the VM for isolation, and there is a current, reported breakage
-  on this exact combination (G-0006-1).
+  own guidance prefers the VM for isolation, and a reported breakage on this
+  combination did not reproduce on the server's versions (G-0006-1), but could return
+  with an update (G-0006-10).
 - The Exporter, the hardest thing to containerise in the whole system, now has to run
-  inside two layers of containers with GPU access (G-0006-2).
+  inside two layers of containers with GPU access. Its mapper was shown to work there,
+  given a seccomp profile that lets Steam's runtime create namespaces (G-0006-2).
 - Availability of the bot and the API is that of one laptop on home wifi. This was
   accepted; the websites do not share it.
 - Guests cannot be reached directly from the workstation, only through the host. This
@@ -133,6 +135,21 @@ machine after all and solve memory differently (for example by starting the pipe
 VM only on demand); or run the services without Docker inside the guest, at the cost
 of the "same as local" principle.
 
+**Resolved 2026-10-21:** not affected. Spike on the server (pve-manager 9.2.2, kernel
+7.0.2-6-pve, lxc-pve 7.0.0-2): a throwaway unprivileged Debian 13 container with
+`nesting=1,keyctl=1` and no AppArmor or `lxc.*` overrides in its config, Docker from
+Docker's own repository (docker-ce 29.9.2, containerd.io 2.4.2, runc 1.5.2, overlayfs,
+cgroup v2). `hello-world`, an `alpine` container reading
+`net.ipv4.ip_unprivileged_port_start` (the sysctl in the reported error), an `nginx`
+container with a published port answering HTTP 200, and a one-service `docker compose
+up` all worked. The container stayed confined by its generated AppArmor profile in
+enforce mode, and the kernel logged no denials from it. (Inside it, Docker reports no
+AppArmor support, so it does not give its own containers a profile; the outer profile is
+the boundary, as intended.) So the workaround is not needed
+and the unprivileged container stands. Not covered: GPU passthrough (G-0006-2), memory
+under the real limit (spike 3), and future package updates, which can bring it back
+(G-0006-10).
+
 ### G-0006-2. The Exporter's mapper inside Docker inside the guest
 
 - **Kind:** verification
@@ -150,6 +167,34 @@ The decision already calls for a trial before cutover. It should be planned as a
 risk, with fallbacks named in advance: run the Exporter directly in the guest (not in
 Docker), or leave the Exporter on the host and let the rest of the pipeline run in the
 guest. Either fallback changes ADR-0007 and ADR-0016.
+
+**Resolved 2026-10-21:** it works, and neither fallback is needed. In a throwaway
+unprivileged guest at the planned 2 GiB and 0.5 GiB swap, with the GPU's two device
+nodes passed in (`dev0`/`dev1`, no raw LXC options), a Docker image mirroring
+`home-server`'s `wrf-gpu/install.sh` ran the Exporter's mapper unchanged on a copy of
+the 2026-10-20 game files (`docs/research/2026-10-mapper-in-container.md`):
+
+1. RADV saw the integrated GPU through both layers, and gamescope's headless backend
+   started without a login session.
+2. Steam's runtime (`pressure-vessel`, through `bwrap`) needs user and mount namespaces,
+   which Docker's default seccomp profile blocks. The container needs that profile plus
+   `unshare`, `setns`, `mount`, `umount2`, `pivot_root` and `clone`. It does not need
+   to be privileged, extra capabilities, or AppArmor turned off.
+3. The mapper took 14 to 20 s (14 to 46 s on the host). The mapping file is not
+   byte-identical between runs, on the host either, because UE4SS writes records in the
+   engine's order. Decoded and re-keyed by name, all of it (including UE4SS's
+   extensions) matched production.
+4. Mesa is pinned to 26.1.6 from backports, the version the test ran on (the host has
+   25.0.7 from main, which does not resolve with umu-launcher once gamescope comes
+   from backports). Decided 2026-10-22.
+5. Production needs `~/.local/share/umu` (Steam's runtime, 797 MB) on a persistent
+   volume. That is a re-downloadable cache, so it belongs on the data volume like
+   Proton and the Wine prefix (ADR-0007 decision 3, ADR-0023 decision 4). It must be
+   mounted on its own, not as the whole home directory, which also holds
+   DepotDownloader's remembered login, a secret (G-0022-2). Decided 2026-10-22.
+
+Not covered: the Steam download and the export inside the container, and the live data
+volume's ownership mapping (G-0006-4).
 
 ### G-0006-3. Whether the pipeline fits in the limit
 
@@ -295,5 +340,6 @@ cache, as measured before, and success under the 2 GiB limit with no swap.
 
 - `docs/research/2026-10-baseline.md`, sections 2.3 and 3.
 - `docs/research/2026-10-pipeline-memory.md` (G-0006-3).
+- `docs/research/2026-10-mapper-in-container.md` (G-0006-2).
 - `docs/research/external-facts.md`, "Proxmox, LXC and Docker".
 - Proxmox container documentation: https://pve.proxmox.com/pve-docs/pct.1.html
