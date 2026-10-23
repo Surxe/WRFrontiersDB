@@ -80,6 +80,8 @@ Status values:
 | **Since about November 2025 (containerd.io 1.7.28-2, a fix for CVE-2025-52881), Docker inside an LXC container on Proxmox 9 can fail to start containers** with `open sysctl net.ipv4.ip_unprivileged_port_start file: reopen fd 8: permission denied`. The cause is an interaction between runc and AppArmor. The published workarounds switch off AppArmor confinement for that container. No permanent fix was named. | Reported 2026-10-12 | https://blog.ktz.me/apparmors-awkward-aftermath-atop-proxmox-9 and Proxmox forum threads |
 | It does not affect the server's versions (Proxmox 9.2.2, kernel 7.0.2-6-pve, lxc-pve 7.0.0-2, containerd.io 2.4.2, runc 1.5.2): Docker containers start in an unprivileged, nesting-enabled container with AppArmor confinement left on. | Measured 2026-10-21 | spike on the server (ADR-0006, G-0006-1) |
 | Docker's default seccomp profile allows `unshare`, `setns`, `mount`, `umount2` and `pivot_root` only to containers with `CAP_SYS_ADMIN`, so `bwrap` (and so Steam's pressure-vessel runtime used by umu-launcher) cannot create its namespaces in a default container. | Measured 2026-10-21 | spike on the server (ADR-0006, G-0006-2) |
+| A Proxmox container can map one host id straight through with `lxc.idmap` lines in its config, once `root:<id>:1` is in `/etc/subuid` and `/etc/subgid`; the other ids stay shifted. Bind-mounted files owned by that id then have the same owner on both sides, including from Docker containers in the guest running as that id. | Measured 2026-10-23 | spike on the server (ADR-0006, G-0006-4) |
+| DVC stops with `getpwuid(): uid not found` when run under a uid that has no passwd entry. | Measured 2026-10-23 | same spike, DVC 3.67.1 |
 
 ## GitHub
 
