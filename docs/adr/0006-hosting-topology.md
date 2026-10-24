@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21 |
+| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
@@ -191,7 +191,9 @@ the 2026-10-20 game files (`docs/research/2026-10-mapper-in-container.md`):
    volume. That is a re-downloadable cache, so it belongs on the data volume like
    Proton and the Wine prefix (ADR-0007 decision 3, ADR-0023 decision 4). It must be
    mounted on its own, not as the whole home directory, which also holds
-   DepotDownloader's remembered login, a secret (G-0022-2). Decided 2026-10-22.
+   DepotDownloader's remembered login, a secret (G-0022-2). Decided 2026-10-22. It must
+   be filled at deploy time: with an empty cache, the download runs inside the mapper's
+   120 s window and the mapper fails (found 2026-10-23, G-0006-4).
 
 Not covered: the Steam download and the export inside the container, and the live data
 volume's ownership mapping (G-0006-4).
@@ -241,6 +243,45 @@ nobody. Docker containers inside the guest add a third set of user ids. A mappin
 to be chosen so that the pipeline's containers, staging's containers and the old host
 pipeline (which keeps running until cutover, ADR-0025) can all read and write what they
 need on the same volume, and so that DVC's shared cache works with group permissions.
+
+**Resolved 2026-10-23:** map id 1000 straight through, and run every writing container
+as `1000:1000` (`docs/research/2026-10-volume-ownership.md`). Tested in a throwaway
+guest with a test folder on the real volume bind-mounted in:
+
+1. The volume belongs to host `dev` (uid and gid 1000), which also runs the old
+   pipeline. With `root:1000:1` added to the host's `/etc/subuid` and `/etc/subgid` and
+   six `lxc.idmap` lines in the guest's config, guest id 1000 is host id 1000 and every
+   other id is shifted as usual. Files written by the guest user, by Docker containers
+   running as `1000:1000`, and by host `dev` all show the same owner, and each side can
+   change and delete the others' files.
+2. A container left as root writes files the host sees as uid 100000. So the rule:
+   every service that writes to the volume sets `user: "1000:1000"`, and its image
+   defines that user. DVC refuses to run under a uid with no passwd entry.
+3. DVC's shared cache (`cache.shared group`) worked between uid 1000 and 1001 sharing
+   group 1000: checkout of each other's objects, and `dvc gc` removing the other's.
+   Staging nevertheless uses the same uid as production (decided 2026-10-23). They are separated by Compose
+   project, paths and secrets (ADR-0008), and a second uid adds little at this scale.
+   The group modes already on the volume (setgid directories, `umask 002`) keep a
+   second uid possible.
+4. The GPU passthrough of G-0006-2 still works alongside the custom map.
+
+This puts raw `lxc.*` lines in the guest's config, which only `root@pam` may set, in
+the `home-server` scripts that create the guest (decision 8).
+
+Follow-up tests the same day, in a guest built to this design with the real volume and
+repositories bind-mounted:
+
+5. Today's pipeline, forced, ran in a Docker container as `1000:1000` and completed. It
+   wrote 78,271 files, every one owned by `dev`. Its parse output was byte-identical to
+   the host pipeline's for the same game files.
+6. A lock file on the volume excludes across host, guest and Docker container, both
+   with `flock` and with POSIX locks (G-0025-6).
+7. A snapshot `vzdump` leaves the bind mounts out, and `pct restore` keeps the raw
+   `lxc.idmap` lines. The restored guest worked unchanged (ADR-0023).
+
+Found along the way, outside this gap: the umu cache must be filled at deploy time (see
+G-0006-2), and the Exporter needs an option to not wrap the export in
+`systemd-run --user --scope`, which fails in a container (ADR-0007).
 
 ### G-0006-5. Where the guest's disk lives and how big it is
 
@@ -341,5 +382,6 @@ cache, as measured before, and success under the 2 GiB limit with no swap.
 - `docs/research/2026-10-baseline.md`, sections 2.3 and 3.
 - `docs/research/2026-10-pipeline-memory.md` (G-0006-3).
 - `docs/research/2026-10-mapper-in-container.md` (G-0006-2).
+- `docs/research/2026-10-volume-ownership.md` (G-0006-4).
 - `docs/research/external-facts.md`, "Proxmox, LXC and Docker".
 - Proxmox container documentation: https://pve.proxmox.com/pve-docs/pct.1.html

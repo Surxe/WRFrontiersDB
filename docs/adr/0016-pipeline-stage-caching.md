@@ -193,7 +193,8 @@ workspace listed; a way to express "what production currently uses" (which depen
 where lockfiles are committed, G-0012-2); and confirmation of whether the run cache's
 own records are ever pruned, which the documentation does not say. Group write
 permissions on the shared cache across three sets of container users are part of the
-same design (ADR-0006, G-0006-4).
+same design (ADR-0006, G-0006-4). That part is settled: all three run as uid 1000, and a
+shared cache with `cache.shared group` was shown to work even between two uids.
 
 ### G-0016-4. How fast the cache grows
 

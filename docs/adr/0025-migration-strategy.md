@@ -200,7 +200,11 @@ Decision 3 relies on one lock file visible to the old pipeline on the host and t
 one in the guest. The old pipeline does not take any such lock today, so its units
 have to be changed, which is a change to frozen code. The file also has to be shared
 across the container boundary with ownership that both sides can use (ADR-0006,
-G-0006-4).
+G-0006-4). Ownership is settled: both sides run as id 1000, which is the same account
+on the host and in the guest. A lock taken on the host is seen inside the guest and
+inside its Docker containers through the bind mount, and the other way round, with both
+`flock` and POSIX locks (tested 2026-10-23,
+`docs/research/2026-10-volume-ownership.md`).
 
 ### G-0025-7. The final state import
 
