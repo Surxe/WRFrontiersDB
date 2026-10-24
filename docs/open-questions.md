@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 176. Resolved: 27.
+Open: 175. Resolved: 28.
 
 ## Counts
 
@@ -19,7 +19,7 @@ Open: 176. Resolved: 27.
 |---|---|
 | decision | 58 |
 | verification | 28 |
-| design | 74 |
+| design | 73 |
 | action | 16 |
 
 ## By ADR
@@ -83,7 +83,6 @@ Open: 176. Resolved: 27.
 
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
-| [G-0006-5](adr/0006-hosting-topology.md) | design | phase 3 | Where the guest's disk lives and how big it is |
 | [G-0006-6](adr/0006-hosting-topology.md) | decision | phase 3 | One mechanism for a service to get its database |
 | [G-0006-7](adr/0006-hosting-topology.md) | design | phase 3 | Starting again after a power cut |
 | [G-0006-9](adr/0006-hosting-topology.md) | decision | not scheduled | When to move the API and bot to a rented server |
@@ -340,6 +339,7 @@ Open: 176. Resolved: 27.
 | [G-0006-2](adr/0006-hosting-topology.md) | 2026-10-21 | The Exporter's mapper inside Docker inside the guest |
 | [G-0006-3](adr/0006-hosting-topology.md) | 2026-10-21 | Whether the pipeline fits in the limit |
 | [G-0006-4](adr/0006-hosting-topology.md) | 2026-10-23 | File ownership across the container boundary |
+| [G-0006-5](adr/0006-hosting-topology.md) | 2026-10-23 | Where the guest's disk lives and how big it is |
 | [G-0006-8](adr/0006-hosting-topology.md) | 2026-10-21 | Valheim's memory under load |
 | [G-0006-11](adr/0006-hosting-topology.md) | 2026-10-21 | The Parser's model step holds every model in memory |
 | [G-0009-1](adr/0009-data-store.md) | 2026-10-20 | Which SQLite versions must be supported |

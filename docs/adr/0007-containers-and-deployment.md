@@ -229,6 +229,12 @@ volume plus system packages. How large its image is, and how long a pull takes o
 server's wifi, should be measured once, because it sets the minimum duration of any
 release that touches it.
 
+Measured 2026-10-23 with a stand-in image (`docs/research/2026-10-disk-sizing.md`): the
+exporter image is 2.54 GB, 643 MB compressed, with Proton kept on the data volume.
+Pulls run at about 86 Mbit/s, so about a minute when its base layers change, seconds
+when only the code layer does. The image must set `BATCH_EXPORT_MEMORY_SCOPE=none`
+(WRFrontiers-Exporter PR #35).
+
 ## References
 
 - `docs/research/2026-10-baseline.md`, sections 2 and 3.
