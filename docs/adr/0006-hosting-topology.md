@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23; guest disk and data volume sized, 2026-10-23 |
+| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23; guest disk and data volume sized, 2026-10-23; database fetched from object storage at every site, 2026-10-24 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
@@ -57,8 +57,8 @@ A principle was agreed first, and used to settle several later questions:
    (Applied separately from this project. The plan was 3 GiB; 3.5 GiB is what was
    applied, on 2026-10-11.)
 5. **The design must not depend on being at home or on Proxmox.** The same Compose file
-   runs anywhere; the pipeline publishes each database to object storage and the API
-   can fetch it from there. A likely later split is: the pipeline stays at home, and
+   runs anywhere; the pipeline publishes each database to object storage, and every
+   service fetches it from there, at home too (G-0006-6). A likely later split is: the pipeline stays at home, and
    the API and bot move to a small rented server.
 6. **The home machine is never on the path of a page view.** Pages and images are
    served from Cloudflare (ADR-0019, ADR-0020). Once the API exists, some site features
@@ -325,6 +325,22 @@ already on the server's disk. Those are two mechanisms. Running one at home and 
 other on a rented server later would mean the rented-server path is untested until the
 day it is needed. Options: always fetch from object storage, even at home; or keep the
 local pointer and accept that the remote path is future work.
+
+**Resolved 2026-10-24:** always fetch from object storage, even at home. The fetch is
+the one way a service gets a database; the pipeline's own copy at home is not a second
+path (ADR-0009, ADR-0015).
+
+- The pipeline uploads the candidate (ADR-0014 step 3). Promotion then tells each
+  service host to download `wrfdb-<release>.sqlite` from the private bucket, verify
+  its checksum against the one recorded in the release, place it in the releases
+  directory and repoint `current`.
+- Rollback is unchanged: the server keeps the current and previous two files on its
+  own disk (ADR-0015 decision 6). A failed fetch leaves production on the previous file.
+- Cost, measured: the server's uplink is about 86 Mbit/s, so a 30 MB file (ADR-0009's
+  planning figure) takes about 3 seconds per release.
+- Not tested yet: the bucket does not exist. The first real fetch becomes part of the
+  bucket set-up (ADR-0015 G-0015-5). The fetch-verify-repoint sequence can be tested
+  locally before then.
 
 ### G-0006-7. Starting again after a power cut
 
