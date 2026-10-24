@@ -214,6 +214,13 @@ database itself. A rough upper bound for those together is 1.5 GB per patch. Wit
 on day one. One pair of patches is thin evidence; a content update larger than a
 balance patch will change more.
 
+Measured 2026-10-23 for the parse output and textures, over ten versions in the Data
+repository's history (`docs/research/2026-10-disk-sizing.md`): 13 to 40 MB of new
+content per patch, so well under the bound above. Parser changes that rewrite a large
+output cost far more, up to 815 MB in one version, so code releases, not patches, are
+what drive growth. About 10 to 15 GB a year in all, against about 33 GB free after
+cutover. The database, converted images and models are still unmeasured.
+
 ### G-0016-5. Whether stages are deterministic
 
 - **Kind:** verification

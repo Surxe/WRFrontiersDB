@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23 |
+| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23; guest disk and data volume sized, 2026-10-23 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
@@ -280,8 +280,9 @@ repositories bind-mounted:
    `lxc.idmap` lines. The restored guest worked unchanged (ADR-0023).
 
 Found along the way, outside this gap: the umu cache must be filled at deploy time (see
-G-0006-2), and the Exporter needs an option to not wrap the export in
-`systemd-run --user --scope`, which fails in a container (ADR-0007).
+G-0006-2), and the Exporter's `systemd-run --user --scope` fails in a container. The
+Exporter now has `BATCH_EXPORT_MEMORY_SCOPE`. The exporter image sets it to `none`, so
+the container's own limit is the hard cap (WRFrontiers-Exporter PR #35, ADR-0007).
 
 ### G-0006-5. Where the guest's disk lives and how big it is
 
@@ -293,6 +294,25 @@ and the growth of the pipeline's cache on the 68 GB data volume, which has 39 GB
 today. Each patch adds whatever changed in the stage outputs: about 200 MB for the
 export on the one pair of patches measured, with the other stages still unmeasured
 (ADR-0016, G-0016-4).
+
+**Resolved 2026-10-23:** both fit (`docs/research/2026-10-disk-sizing.md`).
+
+1. **Guest root disk: 32 GB, thin-provisioned on `local-lvm`** (about 315 GB free).
+   Stand-ins for the planned images came to 3.7 GB for one set. The exporter alone is
+   2.5 GB (643 MB compressed) with Proton kept on the data volume. The worst case,
+   with a build cache, a second image version and logs, is about 12 GB. After each
+   deploy, keep the current and previous tag; cap the build cache.
+2. **Data volume: the existing 68 GB.** After cutover it holds about 24 GB: the Steam
+   download 15, the first fill of the DVC cache about 5.5, Proton, prefix and umu 2.9.
+   In the Data repository's history a patch added 13 to 40 MB of parse output and
+   textures. Parser changes that rewrote large outputs added up to 815 MB in one
+   version. With about 0.2 GB of export per patch, the volume grows by roughly 10 to
+   15 GB a year without clean-up: two years or more of headroom. It cannot grow in
+   place (4 GB free in the volume group); if it must, move the data to a thin volume.
+3. **The daily dump leaves out Docker's storage** with
+   `--exclude-path '/var/lib/docker/?*' --exclude-path '/var/lib/containerd/?*'`
+   (552 MB instead of about 3 GB). The restored guest started Docker without images
+   and pulled again (ADR-0023).
 
 ### G-0006-6. One mechanism for a service to get its database
 

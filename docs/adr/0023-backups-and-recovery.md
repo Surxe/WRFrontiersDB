@@ -40,8 +40,10 @@ After the migration the things that exist are these:
 2. **The WRF guest is dumped daily to the USB stick, keeping three**, by a host
    systemd timer that runs after the Valheim dump.
    - Left out of the dump: the data volume (it is a mount, not part of the guest's
-     disk); Docker's own storage (images are pulled again from the registry); the
-     local copies of databases (downloaded again from storage).
+     disk); Docker's own storage (images are pulled again from the registry; exclude
+     it with `--exclude-path '/var/lib/docker/?*' --exclude-path '/var/lib/containerd/?*'`,
+     tested 2026-10-23 in ADR-0006, G-0006-5); the local copies of databases
+     (downloaded again from storage).
    - Operational state (the update probe's and discount watch's state files, logs)
      therefore lives in a plain directory in the guest, not in a Docker-managed
      volume, so that the dump includes it.
