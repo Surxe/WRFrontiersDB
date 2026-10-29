@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23; guest disk and data volume sized, 2026-10-23; database fetched from object storage at every site, 2026-10-24 |
+| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23; guest disk and data volume sized, 2026-10-23; database fetched from object storage at every site, 2026-10-24; restart after a power cut, 2026-10-29; a drained battery deferred, 2026-10-29 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
@@ -352,6 +352,58 @@ guest start-on-boot, Docker restart policies, the scheduled jobs, and the tunnel
 specified. The host's wifi comes up through a custom service, which the guest's network
 depends on.
 
+**Resolved 2026-10-29** for a restart: each layer comes back on its own, given the
+settings below (`docs/research/2026-10-power-restart.md`). A cut that empties the
+battery is deferred to G-0006-12.
+
+1. **Most power cuts are not restarts.** The server is a laptop with a battery of
+   about 36 Wh (76% of design). A short cut takes the router down, not the host, so
+   what has to work is reconnecting: wifi, the tunnel and the bot.
+2. **The host layer was tested by a reboot on 2026-10-29** with Valheim idle. The
+   firmware took 12 s and the whole boot 42 s. Wifi came up on the same address and
+   the network was online at 13.9 s. The bot started at 13.9 s and logged in 5 s
+   later. VM 100 started at 17.3 s, and Valheim's session was active about a minute
+   after boot. There were no failed units. Guest 101 (`lxc-lab`) has no `onboot` and
+   stayed stopped.
+3. **The WRF guest:** `onboot: 1` and `startup: order=2` (after Valheim), set by the
+   `home-server` script that creates it.
+4. **Inside it:** `restart: unless-stopped` on every long-running Compose service (the
+   API, the bot, `cloudflared`), as the Valheim stack already does. A service stopped
+   on purpose, such as staging, stays stopped. Pipeline commands
+   (`docker compose run --rm`) get no restart policy; their timers start them.
+5. **Timers in `deploy/`** have `Persistent=true`,
+   `Wants=`/`After=network-online.target` and `After=docker.service`. Starting the guest
+   does not wait for the host's wifi, so a catch-up run at boot can fail. When it
+   does, the next regular run picks the work up.
+6. **Finding out:** the host sends one email per boot, saying whether the previous
+   boot ended cleanly (`home-server` PR #80, `hs-boot-report`). The journal is kept on
+   disk. The email arrived after the 2026-10-29 reboot and reported a clean shutdown.
+   This partly covers the first row of ADR-0024's table.
+
+Not covered: items 3 to 5 are checked when the guest is built (the phase 3 guest
+task). A router-only outage, the host's DHCP lease changing, and `cloudflared`
+staying connected are untested. A run cut off part-way can lose its patch (G-0012-8).
+
+### G-0006-12. When the battery runs out
+
+- **Kind:** decision
+- **Needed by:** not scheduled
+
+A cut longer than the battery lasts (3 to 6 hours estimated; not measured, and the
+maintainer will not drain it on purpose) stops everything at once, uncleanly. No
+source shows an option on this model (Acer SF314-42, Insyde BIOS V1.08) to power on
+when mains returns, so the host probably stays off until someone presses the button.
+Nothing shuts the host down on low battery. Options: a host timer or udev rule that
+runs `systemctl poweroff` at about 10% while discharging; checking the BIOS for an AC
+power-on setting; or accepting both as they are. Revisit if a long cut happens. The
+boot email (G-0006-7) reports the unclean end when it does.
+
+**Resolved 2026-10-29:** deferred. Both are accepted as they are: after a cut that
+empties the battery, the host stops uncleanly and stays off until someone presses
+the button. There is no low-battery shutdown, no BIOS check and no runtime
+measurement for now. Reopen if a long cut happens; the boot email will report the
+unclean end.
+
 ### G-0006-8. Valheim's memory under load
 
 - **Kind:** verification
@@ -419,5 +471,6 @@ cache, as measured before, and success under the 2 GiB limit with no swap.
 - `docs/research/2026-10-pipeline-memory.md` (G-0006-3).
 - `docs/research/2026-10-mapper-in-container.md` (G-0006-2).
 - `docs/research/2026-10-volume-ownership.md` (G-0006-4).
+- `docs/research/2026-10-power-restart.md` (G-0006-7).
 - `docs/research/external-facts.md`, "Proxmox, LXC and Docker".
 - Proxmox container documentation: https://pve.proxmox.com/pve-docs/pct.1.html

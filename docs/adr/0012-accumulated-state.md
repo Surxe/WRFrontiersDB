@@ -206,6 +206,21 @@ Machine-made commits to permanent state are unreviewed by design. The swap gate 
 some of it (the build-code registry only grows, slug history is consistent). Whether
 anything else should be checked, or summarised in the run report, is open.
 
+### G-0012-8. The probe marks a patch handled when the run starts
+
+- **Kind:** design
+- **Needed by:** cutover
+
+The update probe saves a patch as handled once its hand-off command exits 0
+(Orchestrator `src/probe.py`, `main`). On the server that command is
+`systemctl start --no-block wrf-orchestrator@{version}.service`, which returns once the
+job is queued. So the patch is recorded as handled when the run starts, not when it
+finishes. A run that fails, or is cut off by a power cut or a reboot (G-0006-7), is
+not retried. Nothing reports it, either, unless the run itself sends an email. Options:
+advance the probe's state only when the run succeeds (the run writes the state, or
+the probe checks the run's last outcome); or keep the current behaviour, and have the
+boot report or the run report name any patch that has no successful run.
+
 ## References
 
 - `docs/research/2026-10-baseline.md`, sections 2 and 4.

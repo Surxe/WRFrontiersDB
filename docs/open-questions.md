@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 174. Resolved: 29.
+Open: 175. Resolved: 30.
 
 ## Counts
 
@@ -19,7 +19,7 @@ Open: 174. Resolved: 29.
 |---|---|
 | decision | 57 |
 | verification | 28 |
-| design | 73 |
+| design | 74 |
 | action | 16 |
 
 ## By ADR
@@ -158,6 +158,7 @@ Open: 174. Resolved: 29.
 | [G-0012-4](adr/0012-accumulated-state.md) | design | phase 2 | State written by one release and read by another |
 | [G-0012-5](adr/0012-accumulated-state.md) | design | phase 2 (the import) | Which existing files are state |
 | [G-0012-7](adr/0012-accumulated-state.md) | decision | after cutover | Reviewing what the pipeline commits |
+| [G-0012-8](adr/0012-accumulated-state.md) | design | cutover | The probe marks a patch handled when the run starts |
 
 ### ADR-0013: Slugs and link stability
 
@@ -340,6 +341,7 @@ Open: 174. Resolved: 29.
 | [G-0006-4](adr/0006-hosting-topology.md) | 2026-10-23 | File ownership across the container boundary |
 | [G-0006-5](adr/0006-hosting-topology.md) | 2026-10-23 | Where the guest's disk lives and how big it is |
 | [G-0006-6](adr/0006-hosting-topology.md) | 2026-10-24 | One mechanism for a service to get its database |
+| [G-0006-12](adr/0006-hosting-topology.md) | 2026-10-29 | When the battery runs out |
 | [G-0006-8](adr/0006-hosting-topology.md) | 2026-10-21 | Valheim's memory under load |
 | [G-0006-11](adr/0006-hosting-topology.md) | 2026-10-21 | The Parser's model step holds every model in memory |
 | [G-0009-1](adr/0009-data-store.md) | 2026-10-20 | Which SQLite versions must be supported |
