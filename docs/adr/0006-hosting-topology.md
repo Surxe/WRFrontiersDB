@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23; guest disk and data volume sized, 2026-10-23; database fetched from object storage at every site, 2026-10-24; restart after a power cut, 2026-10-29 |
+| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23; guest disk and data volume sized, 2026-10-23; database fetched from object storage at every site, 2026-10-24; restart after a power cut, 2026-10-29; a drained battery deferred, 2026-10-29 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
@@ -397,6 +397,12 @@ Nothing shuts the host down on low battery. Options: a host timer or udev rule t
 runs `systemctl poweroff` at about 10% while discharging; checking the BIOS for an AC
 power-on setting; or accepting both as they are. Revisit if a long cut happens. The
 boot email (G-0006-7) reports the unclean end when it does.
+
+**Resolved 2026-10-29:** deferred. Both are accepted as they are: after a cut that
+empties the battery, the host stops uncleanly and stays off until someone presses
+the button. There is no low-battery shutdown, no BIOS check and no runtime
+measurement for now. Reopen if a long cut happens; the boot email will report the
+unclean end.
 
 ### G-0006-8. Valheim's memory under load
 
