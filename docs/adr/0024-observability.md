@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-10 |
+| Decided | 2026-10-10; availability measured on the host, 2026-10-29 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (deployment), ADR-0014 (swap gate), ADR-0017 (discounts), ADR-0023 (backups) |
@@ -123,6 +123,34 @@ ADR-0006 leaves "move the API and bot to a rented server" without a trigger, and
 sensible trigger is measured downtime. With email only, downtime is not measured.
 Even a crude record (the deploy script and a daily job appending the result of a
 `/v1/meta` request to a file) would give a number to decide with.
+
+**Resolved 2026-10-29:** the home server keeps an availability log and emails a monthly
+summary. It needs no outside service, so decision 1 (email only) stands. It lives in
+`home-server` (`host/hs-availability.py`), because it has to keep running while the
+WRF guest is down.
+
+1. **Every 5 minutes, one line.** Each line records the time and three checks, each
+   `ok`, `down` or `n/a`:
+   - the uplink: Discord's public gateway endpoint answers;
+   - the bot: its heartbeat file is under 3 minutes old;
+   - the API: `/v1/meta` answers; `n/a` until the API exists.
+2. **A gap is downtime.** If the log has no line for more than 10 minutes, nothing was
+   running to write one, so the host was off. That gap counts as down for every
+   configured check. This covers the first row of the table above ("the guest, the
+   host or the home connection is down"), after the fact.
+3. **The bot proves it is connected.** It touches `HEARTBEAT_FILE` every minute while
+   it is connected to Discord (WRFrontiersDB-Discord-Bot). So a bot that is running
+   but disconnected counts as down, which covers the "bot crashes and does not
+   restart" row too. Today the file is in the bot unit's `StateDirectory` on the host.
+   After cutover it moves to the data volume, where the host can still read it.
+4. **The email, on the 1st of each month**, gives per check: availability, hours down,
+   how many of those hours the host was off, the number of outages, and the longest
+   one. It flags a month over G-0006-9's threshold.
+5. **The boot report** (ADR-0006, G-0006-7) also says how long the host was down.
+
+Limits: the log is on the host, so a lost host loses the log. It reports after the
+fact, not during an outage, which still needs the heartbeat service this ADR declined.
+At about 290 lines a day it needs no rotation for years.
 
 ## References
 

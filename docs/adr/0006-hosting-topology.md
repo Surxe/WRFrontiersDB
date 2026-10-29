@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23; guest disk and data volume sized, 2026-10-23; database fetched from object storage at every site, 2026-10-24; restart after a power cut, 2026-10-29; a drained battery deferred, 2026-10-29 |
+| Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23; guest disk and data volume sized, 2026-10-23; database fetched from object storage at every site, 2026-10-24; restart after a power cut, 2026-10-29; a drained battery deferred, 2026-10-29; trigger for renting a server, 2026-10-29 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
@@ -433,6 +433,13 @@ even if Valheim had to go back to 4 GiB. Revisit if the player count grows.
 The later split is described as likely but has no trigger. A useful trigger would be a
 stated tolerance, for example "the bot being unavailable for more than N hours in a
 month". Without monitoring (ADR-0024) there is currently no way to know that number.
+
+**Resolved 2026-10-29:** move the API and bot to a rented server when either one is down
+for **more than 7 hours in each of two months running** (below about 99%), or after
+**any single outage longer than 24 hours**. The number comes from the home server's
+availability log and its monthly email (ADR-0024, G-0024-5). Discord's or Cloudflare's
+own outages count, because users cannot tell them apart. Meeting the trigger reopens
+the decision; it does not move anything by itself.
 
 ### G-0006-10. Host upgrades
 
