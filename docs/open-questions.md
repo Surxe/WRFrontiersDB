@@ -11,15 +11,15 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 174. Resolved: 29.
+Open: 176. Resolved: 29.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
-| decision | 57 |
+| decision | 58 |
 | verification | 28 |
-| design | 73 |
+| design | 74 |
 | action | 16 |
 
 ## By ADR
@@ -84,6 +84,7 @@ Open: 174. Resolved: 29.
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
 | [G-0006-7](adr/0006-hosting-topology.md) | design | phase 3 | Starting again after a power cut |
+| [G-0006-12](adr/0006-hosting-topology.md) | decision | not scheduled | When the battery runs out |
 | [G-0006-9](adr/0006-hosting-topology.md) | decision | not scheduled | When to move the API and bot to a rented server |
 | [G-0006-10](adr/0006-hosting-topology.md) | decision | after cutover | Host upgrades |
 
@@ -158,6 +159,7 @@ Open: 174. Resolved: 29.
 | [G-0012-4](adr/0012-accumulated-state.md) | design | phase 2 | State written by one release and read by another |
 | [G-0012-5](adr/0012-accumulated-state.md) | design | phase 2 (the import) | Which existing files are state |
 | [G-0012-7](adr/0012-accumulated-state.md) | decision | after cutover | Reviewing what the pipeline commits |
+| [G-0012-8](adr/0012-accumulated-state.md) | design | cutover | The probe marks a patch handled when the run starts |
 
 ### ADR-0013: Slugs and link stability
 

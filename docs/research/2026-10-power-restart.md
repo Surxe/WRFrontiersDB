@@ -1,8 +1,8 @@
 # G-0006-7: starting again after a power cut (desk research 2026-10-28)
 
-**Status.** Research only, not yet tested. The facts about the host were read on the
-server as `dev`, without root, so the guest configs and the system journal were out of
-reach. The remaining checks are listed at the end. A real reboot test is one of them.
+**Status.** Desk research on 2026-10-28, followed by a reboot test on 2026-10-29 (see
+"Results" at the end). G-0006-7 is resolved for a restart. The case where the battery
+runs out is deferred to G-0006-12.
 
 **Answer, provisionally.** Most power cuts are not a restart problem, because the
 server is a laptop with a battery. Three cases need different handling:
@@ -168,6 +168,44 @@ which only an outside heartbeat would catch (declined in ADR-0024).
 | A full reboot with the WRF guest built to this design | root, after the guest exists | reboot; check guest, containers, timers, tunnel, bot, all without help |
 | A router-only power cut | Ethan unplugs the router | check that the host re-associates, the tunnel and bot reconnect, and the address is unchanged |
 | When the probe records a build as seen | code reading, Orchestrator | if before success, an interrupted patch day is skipped |
+
+## Results (2026-10-29, on the server)
+
+**Reboot.** `systemctl reboot` at 18:16 CDT, with 0 Valheim connections and no pipeline
+run active. SSH answered again 89 s after the command.
+
+| Step | Time after kernel start |
+|---|---|
+| Firmware / loader / kernel / userspace | 12.4 / 7.7 / 2.6 / 19.4 s, 42 s in total |
+| `home-server-wifi.service` finished, `network-online.target` | 13.9 s, same address 192.168.0.239 |
+| `hs-wrf-discord-bot` started; logged in to Discord | 13.9 s; about 19 s |
+| `hs-boot-report` emailed "previous boot clean" (first attempt) | 16.0 s |
+| `pve-guests` started VM 100 | 17.3 s (finished 21.3 s) |
+| Valheim session active, 0 players | about 60 s (18:18:38) |
+
+No failed units. Timers scheduled as normal.
+
+**Answered from the table of checks:**
+
+- **Guest 101** is `lxc-lab` (512 MB, 2 GB disk, no `onboot`). It stayed stopped.
+- **VM 100** has `onboot: 1`, no `startup`, and `memory: 4096`. ADR-0006 decision 4
+  says 3.5 GiB was applied on 2026-10-11, so the VM is at 4 GiB now. G-0006-8 already
+  allows for 4 GiB.
+- **Past reboots:** the reboot above answers the question. The journal is persistent
+  (`/var/log/journal`, 427 MB), so the boot report can tell clean from unclean.
+- **The probe's "seen" state:** it advances when the hand-off exits 0, and the
+  hand-off is `systemctl start --no-block`. So a run that fails or is cut off is not
+  retried. Recorded as G-0012-8.
+
+**Deferred** (G-0006-12): the battery runtime test (the maintainer will not drain the
+battery on purpose), the BIOS AC power-on check, and a low-battery shutdown.
+
+**Still open, not blocking:**
+
+- a router-only outage: does the host re-associate, keep its address, and do the tunnel
+  and bot reconnect;
+- a DHCP reservation for the host;
+- the guest-level settings, checked when the WRF guest is built.
 
 ## Sources
 
