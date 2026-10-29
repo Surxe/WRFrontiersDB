@@ -11,13 +11,13 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 175. Resolved: 30.
+Open: 173. Resolved: 32.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
-| decision | 57 |
+| decision | 55 |
 | verification | 28 |
 | design | 74 |
 | action | 16 |
@@ -84,7 +84,6 @@ Open: 175. Resolved: 30.
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
 | [G-0006-7](adr/0006-hosting-topology.md) | design | phase 3 | Starting again after a power cut |
-| [G-0006-9](adr/0006-hosting-topology.md) | decision | not scheduled | When to move the API and bot to a rented server |
 | [G-0006-10](adr/0006-hosting-topology.md) | decision | after cutover | Host upgrades |
 
 ### ADR-0007: Containers, images and deployment
@@ -308,7 +307,6 @@ Open: 175. Resolved: 30.
 | [G-0024-2](adr/0024-observability.md) | design | phase 2 | What the new run report contains |
 | [G-0024-3](adr/0024-observability.md) | design | phase 3 | Logs: where they go and how long they are kept |
 | [G-0024-4](adr/0024-observability.md) | decision | phase 3 | Reports from staging |
-| [G-0024-5](adr/0024-observability.md) | decision | before any decision to rent a server | Knowing how available the bot and API are |
 
 ### ADR-0025: Migration strategy
 
@@ -343,6 +341,7 @@ Open: 175. Resolved: 30.
 | [G-0006-6](adr/0006-hosting-topology.md) | 2026-10-24 | One mechanism for a service to get its database |
 | [G-0006-12](adr/0006-hosting-topology.md) | 2026-10-29 | When the battery runs out |
 | [G-0006-8](adr/0006-hosting-topology.md) | 2026-10-21 | Valheim's memory under load |
+| [G-0006-9](adr/0006-hosting-topology.md) | 2026-10-29 | When to move the API and bot to a rented server |
 | [G-0006-11](adr/0006-hosting-topology.md) | 2026-10-21 | The Parser's model step holds every model in memory |
 | [G-0009-1](adr/0009-data-store.md) | 2026-10-20 | Which SQLite versions must be supported |
 | [G-0009-2](adr/0009-data-store.md) | 2026-10-20 | Binary JSON or text JSON for stored documents |
@@ -358,3 +357,4 @@ Open: 175. Resolved: 30.
 | [G-0018-3](adr/0018-api-rollout.md) | 2026-10-20 | Picking up a new database |
 | [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | 2026-10-19 | The domain has email forwarding records |
 | [G-0021-4](adr/0021-site-url-structure.md) | 2026-10-20 | What generates the files under `/data/` |
+| [G-0024-5](adr/0024-observability.md) | 2026-10-29 | Knowing how available the bot and API are |
