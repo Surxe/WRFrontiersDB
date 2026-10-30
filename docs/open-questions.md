@@ -11,13 +11,13 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 169. Resolved: 36.
+Open: 168. Resolved: 37.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
-| decision | 53 |
+| decision | 52 |
 | verification | 28 |
 | design | 73 |
 | action | 15 |
@@ -35,7 +35,6 @@ Open: 169. Resolved: 36.
 
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
-| [G-0003-1](adr/0003-repository-layout.md) | decision | phase 1 | Which Python version |
 | [G-0003-2](adr/0003-repository-layout.md) | decision | phase 2 | Two settings systems |
 | [G-0003-4](adr/0003-repository-layout.md) | design | phase 2 | How TypeScript types are generated from the models |
 | [G-0003-5](adr/0003-repository-layout.md) | decision | phase 2 | Is DVC a workspace dependency or a separate tool |
@@ -327,6 +326,7 @@ Open: 169. Resolved: 36.
 | [G-0002-4](adr/0002-one-repository.md) | 2026-10-19 | Agent skills and per-repository instructions |
 | [G-0002-6](adr/0002-one-repository.md) | 2026-10-19 | Open issues and pull requests in the old repositories |
 | [G-0002-8](adr/0002-one-repository.md) | 2026-10-19 | Whether Design has other consumers |
+| [G-0003-1](adr/0003-repository-layout.md) | 2026-10-29 | Which Python version |
 | [G-0003-3](adr/0003-repository-layout.md) | 2026-10-19 | One Astro version, one screenshot tool |
 | [G-0006-1](adr/0006-hosting-topology.md) | 2026-10-21 | Docker inside an unprivileged container on this Proxmox version |
 | [G-0006-2](adr/0006-hosting-topology.md) | 2026-10-21 | The Exporter's mapper inside Docker inside the guest |

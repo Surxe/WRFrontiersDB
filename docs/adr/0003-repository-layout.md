@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-10 (layout, workspaces), 2026-10-12 (uv installed on the workstation), 2026-10-19 (JavaScript pins, Astro version, browser tools) |
+| Decided | 2026-10-10 (layout, workspaces), 2026-10-12 (uv installed on the workstation), 2026-10-19 (JavaScript pins, Astro version, browser tools), 2026-10-29 (Python version) |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0002 (one repository), ADR-0004 (CI), ADR-0010 (schema), ADR-0012 (state), ADR-0016 (DVC) |
@@ -169,6 +169,12 @@ format needs SQLite 3.45 or newer).
 
 **Proposed default:** 3.13, the version already running everywhere, pinned in
 `.python-version` and installed by uv.
+
+**Resolved 2026-10-29:** The proposed default is accepted: Python 3.13, pinned in
+`.python-version` and installed by uv. It matches the `python:3.13-slim-trixie` images
+already chosen in ADR-0009, G-0009-1. The SQLite concern above no longer applies:
+G-0009-2 stores documents as JSON text, so the minimum is SQLite 3.38 (G-0009-1), which
+any 3.13 build meets.
 
 ### G-0003-2. Two settings systems
 
