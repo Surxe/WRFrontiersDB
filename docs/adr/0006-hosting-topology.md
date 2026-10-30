@@ -4,7 +4,7 @@
 |---|---|
 | Status | Accepted |
 | Decided | 2026-10-09; boundary between repositories settled 2026-10-10; Valheim VM size as applied, 2026-10-11; WRF guest memory and swap from measurement, 2026-10-21; Docker in the container verified, 2026-10-21; the mapper in Docker in the container verified, 2026-10-21; data volume ownership tested, 2026-10-23; guest disk and data volume sized, 2026-10-23; database fetched from object storage at every site, 2026-10-24; restart after a power cut, 2026-10-29; a drained battery deferred, 2026-10-29; trigger for renting a server, 2026-10-29 |
-| Record state | Draft for maintainer review |
+| Record state | Reviewed |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0007 (containers and deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0022 (secrets), ADR-0023 (backups) |
 
