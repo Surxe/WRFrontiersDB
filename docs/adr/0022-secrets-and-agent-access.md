@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| Status | Accepted |
-| Decided | 2026-10-10; one finding added 2026-10-12 |
+| Status | Proposed |
+| Decided | 2026-10-10; one finding added 2026-10-12; list of secrets generated, 2026-10-30 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0006 (hosting), ADR-0007 (deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0023 (backups) |
@@ -235,6 +235,14 @@ never its value. The list as understood today:
 | Email sender credential | run reports | yes | to decide |
 | Cloudflare Workers token | Site deployment | in GitHub only | in GitHub only |
 | Storage read token for the Site build | GitHub Actions | to decide (ADR-0019, G-0019-3) | to decide |
+
+**Resolved 2026-10-30:** The list is generated, not kept by hand: the README section
+written from `common/settings.py` (ADR-0003, G-0003-2) replaces `deploy/secrets.example`.
+It names each secret, its file and the services that read it. Secrets that live only in
+GitHub (the Cloudflare Workers token, the Site build's storage token) are not read by any
+settings class and are listed by hand below the generated part. The open cells in the
+table above are decided under G-0008-7 (staging credentials) and G-0019-3 (the Site
+build's storage token).
 
 ### G-0022-6. Retiring the old secrets
 

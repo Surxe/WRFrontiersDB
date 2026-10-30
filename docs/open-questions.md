@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 167. Resolved: 38.
+Open: 166. Resolved: 39.
 
 ## Counts
 
@@ -20,7 +20,7 @@ Open: 167. Resolved: 38.
 | decision | 51 |
 | verification | 28 |
 | design | 73 |
-| action | 15 |
+| action | 14 |
 
 ## By ADR
 
@@ -271,7 +271,6 @@ Open: 167. Resolved: 38.
 | [G-0022-2](adr/0022-secrets-and-agent-access.md) | decision | phase 2 | The Steam password is passed on a command line |
 | [G-0022-3](adr/0022-secrets-and-agent-access.md) | design | phase 3 | File permissions for secrets inside containers |
 | [G-0022-4](adr/0022-secrets-and-agent-access.md) | decision | phase 3 | Secrets in backups |
-| [G-0022-5](adr/0022-secrets-and-agent-access.md) | action | phase 3 | The list of secrets |
 | [G-0022-6](adr/0022-secrets-and-agent-access.md) | action | phase 5 (cutover) | Retiring the old secrets |
 | [G-0022-7](adr/0022-secrets-and-agent-access.md) | decision | after cutover | Rotation |
 | [G-0022-8](adr/0022-secrets-and-agent-access.md) | verification | phase 2 | What the log filter cannot catch |
@@ -352,4 +351,5 @@ Open: 167. Resolved: 38.
 | [G-0018-3](adr/0018-api-rollout.md) | 2026-10-20 | Picking up a new database |
 | [G-0019-1](adr/0019-cloudflare-dns-hosting-tunnel.md) | 2026-10-19 | The domain has email forwarding records |
 | [G-0021-4](adr/0021-site-url-structure.md) | 2026-10-20 | What generates the files under `/data/` |
+| [G-0022-5](adr/0022-secrets-and-agent-access.md) | 2026-10-30 | The list of secrets |
 | [G-0024-5](adr/0024-observability.md) | 2026-10-29 | Knowing how available the bot and API are |
