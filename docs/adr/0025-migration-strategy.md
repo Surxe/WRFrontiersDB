@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | Accepted, except the cutover procedure, which is not yet decided |
+| Status | Proposed (the cutover procedure is not yet decided) |
 | Decided | 2026-10-08 (single cutover), 2026-10-10 (start now), 2026-10-11 (order of work, live data during the rework, reshaping after cutover), 2026-10-12 (ADRs and learning come first) |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |

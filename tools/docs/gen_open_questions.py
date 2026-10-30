@@ -11,6 +11,8 @@ Every ADR lists what it leaves open under headings of the form
 This script collects them into one file, and checks that every gap id mentioned
 anywhere under docs/ refers to a gap that exists. Standard library only.
 
+Usually run through tools/docs/build_docs.py, which runs every generator.
+
 Usage:
     python3 tools/docs/gen_open_questions.py           # rewrite docs/open-questions.md
     python3 tools/docs/gen_open_questions.py --check   # exit 1 if it is stale or a reference is broken
@@ -18,85 +20,11 @@ Usage:
 
 from __future__ import annotations
 
-import re
 import sys
-from dataclasses import dataclass
-from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[2]
-DOCS = REPO / "docs"
-ADR_DIR = DOCS / "adr"
+from adr_lib import DOCS, GAP_REF, KINDS, REPO, Gap, cell, read_gaps
+
 OUT = DOCS / "open-questions.md"
-
-ADR_FILE = re.compile(r"^(\d{4})-.+\.md$")
-GAP_HEADING = re.compile(r"^### (G-(\d{4})-(\d+))\. (.+)$")
-FIELD = re.compile(r"^- \*\*(Kind|Needed by):\*\* (.+)$")
-RESOLVED = re.compile(r"^\*\*Resolved (\d{4}-\d{2}-\d{2}):\*\*")
-GAP_REF = re.compile(r"\bG-\d{4}-\d+\b")
-TITLE = re.compile(r"^# ADR-(\d{4}): (.+)$")
-KINDS = ("decision", "verification", "design", "action")
-
-
-@dataclass
-class Gap:
-    gap_id: str
-    adr: str
-    adr_file: str
-    adr_title: str
-    number: int
-    title: str
-    kind: str = ""
-    needed_by: str = ""
-    resolved: str = ""
-
-
-def read_gaps() -> tuple[list[Gap], list[str]]:
-    gaps: list[Gap] = []
-    problems: list[str] = []
-    for path in sorted(ADR_DIR.iterdir()):
-        match = ADR_FILE.match(path.name)
-        if not match:
-            continue
-        adr = match.group(1)
-        adr_title = ""
-        current: Gap | None = None
-        for line in path.read_text(encoding="utf-8").splitlines():
-            title = TITLE.match(line)
-            if title:
-                adr_title = title.group(2)
-                continue
-            heading = GAP_HEADING.match(line)
-            if heading:
-                if heading.group(2) != adr:
-                    problems.append(f"{path.name}: {heading.group(1)} does not match the file's number")
-                current = Gap(heading.group(1), adr, path.name, adr_title, int(heading.group(3)), heading.group(4))
-                gaps.append(current)
-                continue
-            if line.startswith("## "):
-                current = None
-                continue
-            if current is None:
-                continue
-            field = FIELD.match(line)
-            if field:
-                if field.group(1) == "Kind":
-                    current.kind = field.group(2).strip()
-                else:
-                    current.needed_by = field.group(2).strip()
-                continue
-            resolved = RESOLVED.match(line)
-            if resolved:
-                current.resolved = resolved.group(1)
-    seen: set[str] = set()
-    for gap in gaps:
-        if gap.gap_id in seen:
-            problems.append(f"{gap.adr_file}: {gap.gap_id} appears twice")
-        seen.add(gap.gap_id)
-        if gap.kind not in KINDS:
-            problems.append(f"{gap.adr_file}: {gap.gap_id} has kind {gap.kind!r}; expected one of {', '.join(KINDS)}")
-        if not gap.needed_by:
-            problems.append(f"{gap.adr_file}: {gap.gap_id} has no 'Needed by'")
-    return gaps, problems
 
 
 def broken_references(known: set[str]) -> list[str]:
@@ -111,10 +39,6 @@ def broken_references(known: set[str]) -> list[str]:
     return problems
 
 
-def cell(text: str) -> str:
-    return text.replace("|", "\\|")
-
-
 def render(gaps: list[Gap]) -> str:
     open_gaps = [g for g in gaps if not g.resolved]
     done = [g for g in gaps if g.resolved]
@@ -122,7 +46,7 @@ def render(gaps: list[Gap]) -> str:
         "# Open questions",
         "",
         "Every gap named in the ADRs, in one place. **This file is generated** by",
-        "`tools/docs/gen_open_questions.py` from the \"Gaps and open questions\" section of",
+        "`tools/docs/build_docs.py` from the \"Gaps and open questions\" section of",
         "each ADR. Do not edit it; edit the ADR and regenerate.",
         "",
         "A gap is one of four kinds:",
@@ -174,7 +98,7 @@ def main(argv: list[str]) -> int:
     text = render(gaps)
     if check:
         if not OUT.exists() or OUT.read_text(encoding="utf-8") != text:
-            print(f"{OUT.relative_to(REPO)} is stale; run tools/docs/gen_open_questions.py", file=sys.stderr)
+            print(f"{OUT.relative_to(REPO)} is stale; run tools/docs/build_docs.py", file=sys.stderr)
             return 1
         return 1 if problems else 0
     OUT.write_text(text, encoding="utf-8")

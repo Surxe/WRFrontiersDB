@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| Status | Accepted |
-| Decided | 2026-10-09 (Docker, images, deploy path), 2026-10-10 (scheduled jobs, tunnel, staging through the deploy script) |
+| Status | Proposed |
+| Decided | 2026-10-09 (Docker, images, deploy path), 2026-10-10 (scheduled jobs, tunnel, staging through the deploy script), 2026-10-30 (settings per environment) |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0004 (CI), ADR-0005 (releases), ADR-0006 (hosting), ADR-0008 (environments), ADR-0016 (DVC), ADR-0022 (secrets) |
@@ -218,6 +218,13 @@ how they stay readable from the host, is not designed. See ADR-0024.
 Secrets have a design (ADR-0022). Ordinary settings that differ between production and
 staging (hostnames, bucket names, Discord guild ids, which sinks to write to) do not
 yet have a home. They should be checked in, per environment, under `deploy/`.
+
+**Resolved 2026-10-30:** Each environment has a checked-in
+`deploy/<environment>/settings.env` of plain `KEY=value` lines, loaded by Compose
+`env_file:` into each service's environment, where the settings classes read them
+(ADR-0003, G-0003-2). The files hold no secrets (ADR-0022). A setting here must never
+change a pipeline stage's output: production and staging share one stage cache
+(ADR-0016, decision 4), so anything that does belongs in `params.yaml`.
 
 ### G-0007-10. Image size and pull time
 
