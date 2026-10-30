@@ -1,7 +1,7 @@
 # Open questions
 
 Every gap named in the ADRs, in one place. **This file is generated** by
-`tools/docs/gen_open_questions.py` from the "Gaps and open questions" section of
+`tools/docs/build_docs.py` from the "Gaps and open questions" section of
 each ADR. Do not edit it; edit the ADR and regenerate.
 
 A gap is one of four kinds:
