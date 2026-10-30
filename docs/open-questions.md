@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 166. Resolved: 39.
+Open: 165. Resolved: 40.
 
 ## Counts
 
@@ -19,7 +19,7 @@ Open: 166. Resolved: 39.
 |---|---|
 | decision | 51 |
 | verification | 28 |
-| design | 73 |
+| design | 72 |
 | action | 14 |
 
 ## By ADR
@@ -87,7 +87,6 @@ Open: 166. Resolved: 39.
 | [G-0007-6](adr/0007-containers-and-deployment.md) | decision | phase 3 | How `wrf release` reaches the guest |
 | [G-0007-7](adr/0007-containers-and-deployment.md) | decision | phase 3 | Are the images public |
 | [G-0007-8](adr/0007-containers-and-deployment.md) | design | phase 3 | Logs |
-| [G-0007-9](adr/0007-containers-and-deployment.md) | design | phase 3 | Non-secret configuration per environment |
 | [G-0007-10](adr/0007-containers-and-deployment.md) | verification | phase 3 | Image size and pull time |
 
 ### ADR-0008: Environments: local, staging and production
@@ -337,6 +336,7 @@ Open: 166. Resolved: 39.
 | [G-0006-8](adr/0006-hosting-topology.md) | 2026-10-21 | Valheim's memory under load |
 | [G-0006-9](adr/0006-hosting-topology.md) | 2026-10-29 | When to move the API and bot to a rented server |
 | [G-0006-11](adr/0006-hosting-topology.md) | 2026-10-21 | The Parser's model step holds every model in memory |
+| [G-0007-9](adr/0007-containers-and-deployment.md) | 2026-10-30 | Non-secret configuration per environment |
 | [G-0009-1](adr/0009-data-store.md) | 2026-10-20 | Which SQLite versions must be supported |
 | [G-0009-2](adr/0009-data-store.md) | 2026-10-20 | Binary JSON or text JSON for stored documents |
 | [G-0009-3](adr/0009-data-store.md) | 2026-10-20 | What `sqldiff` can and cannot show |
