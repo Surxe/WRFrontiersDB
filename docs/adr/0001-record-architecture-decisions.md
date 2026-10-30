@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-10; this record written 2026-10-12 |
-| Record state | Draft for maintainer review |
+| Decided | 2026-10-10; this record written 2026-10-12; gaps settled on review, 2026-10-29 |
+| Record state | Reviewed |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | every other ADR |
 
@@ -131,6 +131,9 @@ ADR text untouched and record resolutions only in a separate living file.
 **Proposed default:** allow appended notes, as written in point 6. A reader of an ADR
 then sees at once which of its gaps are still open.
 
+**Resolved 2026-10-29:** The proposed default is accepted. Resolution notes are
+appended under the gap, as point 6 says.
+
 ### G-0001-2. Review and acceptance of this first set
 
 - **Kind:** action
@@ -140,6 +143,10 @@ The decisions were agreed in conversation; the write-ups were not. The maintaine
 needs to read each ADR, correct anything that misstates a decision, and remove the
 "Draft for maintainer review" line. Where a write-up turns out to be wrong about what
 was decided, it should be corrected before merge, since nothing has been published yet.
+
+**Resolved 2026-10-29:** Accepted. The review goes one ADR at a time. When the
+maintainer has reviewed an ADR, its "Record state" row changes to "Reviewed" (see
+`README.md`); the ADRs still marked "Draft for maintainer review" are the ones left.
 
 ### G-0001-3. Who may accept an ADR
 
@@ -152,6 +159,9 @@ as `Proposed`.
 
 **Proposed default:** only the maintainer changes a status to `Accepted`.
 
+**Resolved 2026-10-29:** The proposed default is accepted. Only the maintainer
+changes a status to `Accepted`; an ADR drafted by an agent stays `Proposed` until then.
+
 ### G-0001-4. Checking the generated question list in CI
 
 - **Kind:** design
@@ -159,6 +169,11 @@ as `Proposed`.
 
 `docs/open-questions.md` is generated. Nothing yet fails when it is stale. A CI step
 that regenerates it and fails on a difference would keep it honest. See ADR-0004.
+
+**Resolved 2026-10-29:** Rejected. CI does not check the file. It is regenerated
+with `tools/docs/gen_open_questions.py` in the same change as the ADR edit, as is done
+today. ADR-0004's G-0004-7 asks for the same check, plus a link check; it is
+left open for that ADR's review.
 
 ## References
 

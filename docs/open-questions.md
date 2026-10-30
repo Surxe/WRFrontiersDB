@@ -11,27 +11,18 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 173. Resolved: 32.
+Open: 169. Resolved: 36.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
-| decision | 55 |
+| decision | 53 |
 | verification | 28 |
-| design | 74 |
-| action | 16 |
+| design | 73 |
+| action | 15 |
 
 ## By ADR
-
-### ADR-0001: Record architecture decisions
-
-| Gap | Kind | Needed by | Question |
-|---|---|---|---|
-| [G-0001-1](adr/0001-record-architecture-decisions.md) | decision | before the first gap is closed | How resolved gaps are recorded |
-| [G-0001-2](adr/0001-record-architecture-decisions.md) | action | before phase 0 of the migration | Review and acceptance of this first set |
-| [G-0001-3](adr/0001-record-architecture-decisions.md) | decision | before the first ADR written by someone other than the maintainer | Who may accept an ADR |
-| [G-0001-4](adr/0001-record-architecture-decisions.md) | design | phase 1 (when CI is set up) | Checking the generated question list in CI |
 
 ### ADR-0002: One repository for all WRF code
 
@@ -326,6 +317,10 @@ Open: 173. Resolved: 32.
 
 | Gap | Resolved | Question |
 |---|---|---|
+| [G-0001-1](adr/0001-record-architecture-decisions.md) | 2026-10-29 | How resolved gaps are recorded |
+| [G-0001-2](adr/0001-record-architecture-decisions.md) | 2026-10-29 | Review and acceptance of this first set |
+| [G-0001-3](adr/0001-record-architecture-decisions.md) | 2026-10-29 | Who may accept an ADR |
+| [G-0001-4](adr/0001-record-architecture-decisions.md) | 2026-10-29 | Checking the generated question list in CI |
 | [G-0002-1](adr/0002-one-repository.md) | 2026-10-19 | Commit messages will link to the wrong pull requests |
 | [G-0002-2](adr/0002-one-repository.md) | 2026-10-19 | Licence |
 | [G-0002-3](adr/0002-one-repository.md) | 2026-10-19 | The old `WRFrontiersDB-API` repository |
