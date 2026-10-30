@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Accepted |
-| Decided | 2026-10-10 (layout, workspaces), 2026-10-12 (uv installed on the workstation), 2026-10-19 (JavaScript pins, Astro version, browser tools), 2026-10-29 (Python version) |
+| Decided | 2026-10-10 (layout, workspaces), 2026-10-12 (uv installed on the workstation), 2026-10-19 (JavaScript pins, Astro version, browser tools), 2026-10-29 (Python version), 2026-10-30 (settings) |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0002 (one repository), ADR-0004 (CI), ADR-0010 (schema), ADR-0012 (state), ADR-0016 (DVC) |
@@ -188,6 +188,23 @@ cannot be printed. As written, an app would use both libraries for overlapping j
 Options: keep `optionsconfig` for non-secret options and pydantic-settings for secrets
 only; move everything to pydantic-settings; or teach `optionsconfig` to read secret
 files.
+
+**Resolved 2026-10-30:** Option 2, all settings through pydantic-settings; `optionsconfig`
+is not used in this repository. There are no per-app `.env` files. Settings are sorted
+by kind:
+
+- run-control flags (`SHOULD_*`) are dropped, because DVC decides what runs (ADR-0016);
+- paths are fixed by the layout;
+- options that change a stage's output go in `params.yaml`;
+- settings that differ by environment go in `deploy/` (ADR-0007, G-0007-9);
+- secrets are files under `/run/secrets` (ADR-0022).
+
+`common/settings.py` holds one small class per concern (Steam, storage, Discord, run
+report, ...), and each stage or service creates only the ones it uses. A single class
+would require every secret in every container. A generator writes a README section from
+those classes, listing each setting and each secret with its file and the services that
+read it; this becomes the list G-0022-5 asks for. `depends_on` is not carried over: it
+existed to tie options to the `SHOULD_*` flags.
 
 ### G-0003-3. One Astro version, one screenshot tool
 
