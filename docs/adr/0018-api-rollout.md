@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | Accepted |
+| Status | Proposed |
 | Decided | 2026-10-08 (an API over SQLite), 2026-10-10 (waves, `/v1/meta`) |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |

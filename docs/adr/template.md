@@ -33,7 +33,7 @@ What follows from the decision, including the costs that were accepted.
 ## Gaps and open questions
 
 What this record leaves undecided, unverified or undesigned. One heading per gap, in
-exactly this form, because `tools/docs/gen_open_questions.py` reads it:
+exactly this form, because `tools/docs/build_docs.py` reads it:
 
 ### G-NNNN-1. Short title
 

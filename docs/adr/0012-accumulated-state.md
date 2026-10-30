@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | Accepted |
+| Status | Proposed |
 | Decided | 2026-10-08 (`state/` directory), 2026-10-10 (slug history, discounts, news, commit order) |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
