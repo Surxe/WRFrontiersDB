@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | Accepted |
+| Status | Proposed |
 | Decided | 2026-10-09 (DNS move, hosting move, Workers static assets, staging, deploys, cache headers, old DV address), 2026-10-10 (tunnel per environment, settings document) |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
