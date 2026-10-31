@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Proposed |
-| Decided | 2026-10-10; one finding added 2026-10-12; list of secrets generated, 2026-10-30; old secrets' retirement planned, 2026-10-30 |
+| Decided | 2026-10-10; one finding added 2026-10-12; list of secrets generated, 2026-10-30; old secrets' retirement planned, 2026-10-30; rotation, 2026-10-30 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0006 (hosting), ADR-0007 (deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0023 (backups) |
@@ -276,6 +276,21 @@ the agent's credentials. The work is a step of the cutover runbook (ADR-0025, G-
 
 Nothing says when a token is replaced, or what to do when one is suspected leaked.
 With narrow tokens the procedure is short, which is a reason to write it down once.
+
+**Resolved 2026-10-30:** No rotation on a calendar.
+
+- **Passwords a person holds** (the Steam account, the email account) are changed only
+  on evidence of compromise. NIST SP 800-63B says so for passwords: forced periodic
+  changes lead to weaker, predictable passwords.
+- **Machine tokens** get a lifetime from the provider where it offers one (GitHub
+  fine-grained tokens, Cloudflare token expiry), which limits how long an unnoticed leak
+  stays useful (the reason NIST SP 800-57 gives keys a cryptoperiod). Each such secret
+  records its expiry date in its settings metadata; the generated list shows it
+  (G-0022-5), and the run report warns 30 days before it.
+- **Any secret suspected leaked** is replaced at once by one written procedure, kept
+  with the generated list: revoke it at the provider first, issue a new one, write it
+  to `/etc/wrfdb/secrets/<name>`, restart the services that read it (the list names
+  them), and check the provider's audit log for use in between.
 
 ### G-0022-8. What the log filter cannot catch
 
