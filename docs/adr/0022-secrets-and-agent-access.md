@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Proposed |
-| Decided | 2026-10-10; one finding added 2026-10-12; list of secrets generated, 2026-10-30 |
+| Decided | 2026-10-10; one finding added 2026-10-12; list of secrets generated, 2026-10-30; old secrets' retirement planned, 2026-10-30 |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0006 (hosting), ADR-0007 (deployment), ADR-0008 (environments), ADR-0019 (Cloudflare), ADR-0023 (backups) |
@@ -253,6 +253,21 @@ The old services keep their secrets in environment variables until cutover; that
 accepted (ADR-0025). After cutover the old secret files on the host should be removed
 and the credentials that only the old system used should be revoked, in particular
 the GitHub token that pushes to the Data repository.
+
+**Resolved 2026-10-30:** The plan for each old credential, taken from the home-server
+repository's unit files and `.env.example` templates (names only):
+
+| Old credential | Where | At cutover |
+|---|---|---|
+| `GH_DATA_REPO_PAT` | `/etc/home-server/wrf-orchestrator.env` | revoked: only the old pipeline pushes to the Data repository |
+| `STEAM_USERNAME`, `STEAM_PASSWORD` | the same file | moved to the guest (the same account; Steam has no narrower credential); host copy deleted |
+| `SMTP_USER`, `SMTP_PASSWORD` | the same file | a new app password issued for the new system, then the old one revoked |
+| `DISCORD_BOT_TOKEN` | `/etc/home-server/wrf-discord-bot.env` | reset, not moved: it has lived in an environment variable any process of the agent's account can read (Context, finding 2); host file deleted |
+| GitHub access for the discount watch | the agent's own `gh` login (the unit runs as `dev`) | nothing to revoke, but the new pipeline uses its own token (G-0022-5), never the agent's |
+
+Still to check before cutover: whether the Jev discount mapping uses a key of its own or
+the agent's credentials. The work is a step of the cutover runbook (ADR-0025, G-0025-1;
+`docs/migration-plan.md`, phase 5).
 
 ### G-0022-7. Rotation
 
