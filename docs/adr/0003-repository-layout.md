@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Proposed |
-| Decided | 2026-10-10 (layout, workspaces), 2026-10-12 (uv installed on the workstation), 2026-10-19 (JavaScript pins, Astro version, browser tools), 2026-10-29 (Python version), 2026-10-30 (settings), 2026-10-31 (TypeScript generation) |
+| Decided | 2026-10-10 (layout, workspaces), 2026-10-12 (uv installed on the workstation), 2026-10-19 (JavaScript pins, Astro version, browser tools), 2026-10-29 (Python version), 2026-10-30 (settings), 2026-10-31 (TypeScript generation, DVC in the workspace) |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0002 (one repository), ADR-0004 (CI), ADR-0010 (schema), ADR-0012 (state), ADR-0016 (DVC) |
@@ -263,6 +263,16 @@ out of the lockfile but then its version is pinned somewhere else.
 
 **Proposed default:** a standalone tool with its version pinned in the pipeline image
 and in `deploy/`, unless a trial shows the lockfile resolves cleanly with it.
+
+**Resolved 2026-10-31:** DVC is a workspace dependency of `apps/orchestrator`, pinned
+exactly (rule 5), so only the pipeline image installs it and the root `uv.lock` holds its
+whole dependency tree. A trial lock on 2026-10-31, with `dvc[s3]` alongside the current
+apps' dependencies and the planned ones (pydantic, pydantic-settings, FastAPI, boto3,
+discord.py), resolved cleanly with DVC 3.67.1 pinned. Unpinned, the same lock quietly
+fell back to DVC 2.1.0, because uv kept the newest boto3, which DVC 3's S3 layer
+(aiobotocore) did not yet allow. So DVC is never left unpinned, and a DVC upgrade checks
+the locked version. The accepted cost: aiobotocore caps boto3 and botocore for every app
+in the workspace.
 
 ### G-0003-6. The published codec file is used from outside
 
