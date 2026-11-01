@@ -11,7 +11,7 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 163. Resolved: 42.
+Open: 162. Resolved: 43.
 
 ## Counts
 
@@ -19,7 +19,7 @@ Open: 163. Resolved: 42.
 |---|---|
 | decision | 50 |
 | verification | 28 |
-| design | 72 |
+| design | 71 |
 | action | 13 |
 
 ## By ADR
@@ -35,7 +35,6 @@ Open: 163. Resolved: 42.
 
 | Gap | Kind | Needed by | Question |
 |---|---|---|---|
-| [G-0003-4](adr/0003-repository-layout.md) | design | phase 2 | How TypeScript types are generated from the models |
 | [G-0003-5](adr/0003-repository-layout.md) | decision | phase 2 | Is DVC a workspace dependency or a separate tool |
 | [G-0003-6](adr/0003-repository-layout.md) | verification | phase 4 | The published codec file is used from outside |
 | [G-0003-7](adr/0003-repository-layout.md) | design | phase 2 | Where the pipeline's working data lives relative to the checkout |
@@ -324,6 +323,7 @@ Open: 163. Resolved: 42.
 | [G-0003-1](adr/0003-repository-layout.md) | 2026-10-29 | Which Python version |
 | [G-0003-2](adr/0003-repository-layout.md) | 2026-10-30 | Two settings systems |
 | [G-0003-3](adr/0003-repository-layout.md) | 2026-10-19 | One Astro version, one screenshot tool |
+| [G-0003-4](adr/0003-repository-layout.md) | 2026-10-31 | How TypeScript types are generated from the models |
 | [G-0006-1](adr/0006-hosting-topology.md) | 2026-10-21 | Docker inside an unprivileged container on this Proxmox version |
 | [G-0006-2](adr/0006-hosting-topology.md) | 2026-10-21 | The Exporter's mapper inside Docker inside the guest |
 | [G-0006-3](adr/0006-hosting-topology.md) | 2026-10-21 | Whether the pipeline fits in the limit |

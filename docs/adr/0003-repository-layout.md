@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Status | Proposed |
-| Decided | 2026-10-10 (layout, workspaces), 2026-10-12 (uv installed on the workstation), 2026-10-19 (JavaScript pins, Astro version, browser tools), 2026-10-29 (Python version), 2026-10-30 (settings) |
+| Decided | 2026-10-10 (layout, workspaces), 2026-10-12 (uv installed on the workstation), 2026-10-19 (JavaScript pins, Astro version, browser tools), 2026-10-29 (Python version), 2026-10-30 (settings), 2026-10-31 (TypeScript generation) |
 | Record state | Draft for maintainer review |
 | Decided by | The maintainer. Analysis and drafting by Claude (AI assistant). |
 | Related | ADR-0002 (one repository), ADR-0004 (CI), ADR-0010 (schema), ADR-0012 (state), ADR-0016 (DVC) |
@@ -232,6 +232,24 @@ Decision 7 fixes that types are generated and committed, not how. The path is Py
 to JSON Schema to TypeScript, but the generator, the handling of open dictionaries
 (`detail`, ADR-0011) and of optional fields are not chosen. The staleness check also
 means the Site's CI job needs Python after all, even though the Site's build does not.
+
+**Resolved 2026-10-31:**
+
+- Models share a base config with `json_schema_serialization_defaults_required=True`,
+  so every field the pipeline writes is required in the types. `None` fields are
+  written as `null`, never left out: no `exclude_none`, `exclude_unset` or
+  `exclude_defaults` on dump.
+- `packages/models` writes `packages/types/openapi.json`, an OpenAPI 3.1 document whose
+  `components.schemas` are the models in serialization mode; the API's routes are added
+  when it exists. openapi-typescript (with `--root-types --root-types-no-schema-prefix`)
+  generates the TypeScript from it.
+- `detail` and other open dictionaries become `{ [key: string]: unknown }`; objects of
+  several types become unions keyed on `type`.
+- Both files are committed. The Python CI job checks that `openapi.json` is current;
+  the Node job checks that the `.ts` is current against the committed `openapi.json`.
+  The Site job needs no Python.
+- Measured 2026-10-31 with Pydantic 2.14.2, openapi-typescript 7.13.0 and
+  json-schema-to-typescript 16.0.0 (`docs/research/2026-10-ts-types.md`).
 
 ### G-0003-5. Is DVC a workspace dependency or a separate tool
 
