@@ -18,9 +18,24 @@ sections 2.2 and 5.2).
 How it works today:
 
 - The News-Scraper keeps an archive of news posts (298 posts from 2022-11 to 2026-09)
-  and detects a new discount announcement. A timer runs it four times a day.
-- On a new week it dispatches a GitHub Actions workflow in the DV repository with the
-  item names and dates as text.
+  and detects a new discount announcement. It does not run on its own schedule: a
+  home-server timer (`hs-wrf-discount-watch`) runs the Orchestrator's discount run
+  (`src/discount.py`), which drives the scraper's two scripts as logged stages. The
+  timer polls six times a day on Mondays and Fridays, four times Tuesday to Thursday
+  and twice a day at weekends (read from the home-server repository, 2026-11-07).
+- On a new week the scraper's watch script dispatches the DV's `all.yml` workflow with
+  the item names and dates as text. The Orchestrator then follows that run to its end
+  and emails a report (ADR-0024).
+- `all.yml` has two callers. Besides the dispatch above, the maintainer runs it by
+  hand, for example to publish a week before the news post appears. Before
+  dispatching, the watch reads the DV's published `weeks.json` and skips a week that is
+  already there (News-Scraper, 2026-10-05). Since 2026-11-06 a run can take, instead
+  of item names, the id of the week's **Discord scheduled event** in the game's
+  server. The DV reads the event through Discord's public, unauthenticated invite
+  endpoint, parses the item names from its description and takes the dates from the
+  event's start and end (DV pull request #89). The event often appears before the
+  news post. Only manual runs use it so far: the Orchestrator still dispatches with
+  names from the news post (G-0017-9).
 - That workflow maps each name to a game object id in three steps: a pinned mapping
   (`manual_mapping.json`, six entries), then an exact name match, then **Jev**, a
   third-party typed classifier service. Each new Jev match is written back to the pin
@@ -99,7 +114,8 @@ February to March 2025, before the archive began.
 - About fifty more data releases a year, each with a database build, a full gate and a
   Site deployment.
 - The mapping step is the only place an external service (Jev) and free text from a
-  news post enter the pipeline. A mapping mistake is committed to permanent state.
+  news post (or, if G-0017-9 adopts it, a Discord event description) enter the
+  pipeline. A mapping mistake is committed to permanent state.
 - The DV's backend (about 3,300 lines) is taken apart: mapping to the orchestrator,
   matching to a shared package, grid generation and predictions to the database build
   and the Site.
@@ -181,6 +197,14 @@ Puppeteer for pipeline screenshots, and that is the tool to use here (ADR-0003,
 G-0003-3). It also means the image for `/discounts/` changes weekly while Discord
 caches previews, which is existing behaviour.
 
+**Update 2026-11-07:** The capture's size varies with the number of rows in the week
+(1876x1104 for the week of 2026-11-10), but the DV's pages declared a fixed
+`og:image` size, so Discord sized the embed from the wrong aspect ratio and cropped
+the image. Since DV pull request #90 a build step reads each captured image's real
+size and writes it into every built page that uses that image. The merged Site needs
+the same step: whatever builds `/discounts/` must declare the captured size, not a
+fixed one.
+
 ### G-0017-7. Detection depends on a third party's page
 
 - **Kind:** verification
@@ -191,15 +215,55 @@ nothing, and with email-only reporting (ADR-0024) a quiet poll looks the same as
 broken one. Today a quiet poll deletes its own log. A cheap guard: report when no new
 discount week has been seen for longer than, say, ten days.
 
+**Update 2026-11-07:** The feed's format did change, on 2026-11-06. The game began
+writing a category label as `<strong>Gear</strong>:` instead of
+`<strong>Gear:</strong>`. The discount post was still recognised by its dated header,
+but no item categories were found, so the watch printed `dispatch-skipped`. The
+Orchestrator treats that as a failure and sent a report, so this break was not
+silent. The category pattern now accepts the colon on either side of the closing tag
+(News-Scraper pull request #6). The silent case remains: a change to the dated header
+itself would make the post unrecognisable, and a poll that finds no discount post
+reports nothing.
+
 ### G-0017-8. How often the watch runs and when it reports
 
 - **Kind:** decision
 - **Needed by:** phase 3
 
-Today: four polls a day, and an email only on a new week or a problem. Whether both
-carry over unchanged is assumed, not decided.
+Today: six polls a day on Mondays and Fridays, four Tuesday to Thursday, two at
+weekends, and an email only on a new week or a problem. Whether both carry over
+unchanged is assumed, not decided.
+
+### G-0017-9. The Discord scheduled event as a second announcement source
+
+- **Kind:** decision
+- **Needed by:** phase 2
+
+Decision 3 has the watch detect a new week from the news feed. Since 2026-11-06 the DV
+can read a week's items and dates from the Discord scheduled event instead (see
+Context), and the event often appears before the news post. Only manual runs use this
+route, because nothing discovers the event's id yet: the public endpoint the DV uses
+reads an event whose id is already known. To decide:
+
+- Whether the watch also polls for the event, and how it finds the id. Listing a
+  server's scheduled events would need an authenticated Discord client, such as the
+  bot's token (ADR-0022). That is an assumption, not yet checked.
+- If both sources are read, which one wins when they disagree. Both should resolve to
+  the same week id, so a week seen first through one source is not mapped again
+  through the other.
+- What is kept as provenance. An event can only be read while it is live, so it
+  cannot be fetched again later. Decision 2 keeps the news post. A week mapped from an
+  event would need the event's description stored with it, or a later check against
+  the news post.
+- Event dates are taken in UTC, while the news post's dates have no time zone and its
+  year is inferred. Whether the two always give the same week needs checking against a
+  few weeks.
 
 ## References
 
 - `docs/research/2026-10-baseline.md`, sections 2.2 and 5.2.
 - The DV repository's `README.md` and `src/backend/build_predictions.py`.
+- The DV repository's `src/backend/discord_event.py` and `src/backend/announcement.py`
+  (pull request #89), and `src/frontend/set-og-size.js` (pull request #90).
+- The News-Scraper repository's `README.md` and `scripts/watch_discount.py`.
+- The Orchestrator repository's `src/discount.py`.

@@ -121,7 +121,7 @@ Needs the answers from G-0025-4 first.
       (G-0015-2); the gate (ADR-0014; G-0014-4, G-0014-5, G-0014-6); promotion
       (G-0014-2); state commits (G-0012-1 to G-0012-4, G-0012-6); the new run report
       (G-0024-2); the discount watch and mapping (G-0017-1, G-0017-3, G-0017-4,
-      G-0017-7).
+      G-0017-7, G-0017-9).
 - [ ] Classify every existing error-level log call as blocking or not (G-0011-1).
 
 **Done when:** the pipeline, run on the server, produces a database that passes the

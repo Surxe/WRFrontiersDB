@@ -62,7 +62,7 @@ to publish.
   | The bot or the API crashes and does not restart | they have no "run" to report on |
   | The tunnel drops | same |
   | The update probe is broken and sees no patches | a quiet probe and a broken probe look the same |
-  | The news feed changes format and no discount week is detected | a quiet poll sends nothing by design (ADR-0017, G-0017-7) |
+  | The news feed changes format so the discount post is not recognised | a quiet poll sends nothing by design (ADR-0017, G-0017-7). A change that breaks only the item list does report (seen 2026-11-06) |
   | Email sending itself fails | the report is the thing that failed |
   | A backup stops happening | ADR-0023, G-0023-3 |
 
