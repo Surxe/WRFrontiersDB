@@ -81,8 +81,10 @@ and a **weekly discount announcement**.
 
 ### 3.2 A discount week
 
-The discount watch (four times a day) finds a new announcement, maps the announced
-names to objects, and writes one file under `state/discounts/`. Only the database
+The discount watch (several polls a day) finds a new announcement in the news feed,
+maps the announced names to objects, and writes one file under `state/discounts/`.
+Whether the week's Discord scheduled event is a second, earlier source is open
+([G-0017-9](adr/0017-discount-data.md)). Only the database
 build re-runs. Then the same gate, commit, promotion and report
 ([ADR-0017](adr/0017-discount-data.md)).
 

@@ -11,13 +11,13 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 161. Resolved: 44.
+Open: 162. Resolved: 44.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
-| decision | 49 |
+| decision | 50 |
 | verification | 28 |
 | design | 71 |
 | action | 13 |
@@ -208,6 +208,7 @@ Open: 161. Resolved: 44.
 | [G-0017-6](adr/0017-discount-data.md) | design | phase 4 | The link-preview screenshot |
 | [G-0017-7](adr/0017-discount-data.md) | verification | phase 2 | Detection depends on a third party's page |
 | [G-0017-8](adr/0017-discount-data.md) | decision | phase 3 | How often the watch runs and when it reports |
+| [G-0017-9](adr/0017-discount-data.md) | decision | phase 2 | The Discord scheduled event as a second announcement source |
 
 ### ADR-0018: API rollout in waves
 
