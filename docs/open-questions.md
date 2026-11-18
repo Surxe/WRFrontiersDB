@@ -11,13 +11,13 @@ A gap is one of four kinds:
 - **design**: something has to be worked out and written down;
 - **action**: something has to be done.
 
-Open: 162. Resolved: 44.
+Open: 164. Resolved: 44.
 
 ## Counts
 
 | Kind | Open |
 |---|---|
-| decision | 50 |
+| decision | 52 |
 | verification | 28 |
 | design | 71 |
 | action | 13 |
@@ -101,6 +101,7 @@ Open: 162. Resolved: 44.
 | [G-0008-8](adr/0008-environments.md) | design | phase 4 | How the staging Site gets built and deployed |
 | [G-0008-9](adr/0008-environments.md) | design | phase 2 | What can be done on the workstation |
 | [G-0008-10](adr/0008-environments.md) | design | phase 2 | Protection against a staging run writing to production |
+| [G-0008-11](adr/0008-environments.md) | decision | phase 3 | Can dev run the bot |
 
 ### ADR-0009: Data store: a SQLite file, rebuilt and swapped
 
@@ -305,6 +306,7 @@ Open: 162. Resolved: 44.
 | [G-0025-7](adr/0025-migration-strategy.md) | design | phase 2 (the script), phase 5 (its last run) | The final state import |
 | [G-0025-8](adr/0025-migration-strategy.md) | action | phase -1 | No estimate |
 | [G-0025-9](adr/0025-migration-strategy.md) | design | phase 5 | Moving the bot |
+| [G-0025-10](adr/0025-migration-strategy.md) | decision | phase 1 | The live services run unreviewed working copies |
 
 ## Resolved
 
