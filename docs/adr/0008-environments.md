@@ -216,6 +216,21 @@ each profile's credentials to be unable to write to the other's destinations (wh
 G-0008-2 and ADR-0022 partly provide) and for the pipeline to refuse to start if its
 profile name and its destinations disagree.
 
+### G-0008-11. Can dev run the bot
+
+- **Kind:** decision
+- **Needed by:** phase 3
+
+If G-0008-1 makes dev a third environment, it runs from a working copy on the server.
+That is the arrangement ADR-0007 rejects for production: today the production bot
+runs from a clone on the host, and has run an uncommitted branch because of it. Nothing
+yet says whether the dev Compose project may start the bot at all, or with which
+token. ADR-0022 assigns the test bot token to staging only.
+
+Open: may dev run the bot; if so, is it limited to the test bot token, and what stops
+the production token from being mounted into the dev project (for example, the
+production token file being readable only by the production Compose project)?
+
 ## References
 
 - `docs/research/2026-10-baseline.md`, section 2.

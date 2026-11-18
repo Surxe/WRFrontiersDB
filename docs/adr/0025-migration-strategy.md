@@ -236,6 +236,31 @@ The production bot is one Discord identity. It can only sensibly run in one plac
 time. At cutover the old unit stops and the new container starts with the same token.
 Whether its registered commands, its links (new routes and trailing slashes) and its
 data source all switch cleanly in one step should be rehearsed with the test bot.
+Before the old unit stops, its working copy should be checked against the commit
+recorded for that repository (G-0025-10), so nothing that only exists in the live
+clone is lost.
+
+### G-0025-10. The live services run unreviewed working copies
+
+- **Kind:** decision
+- **Needed by:** phase 1
+
+Until cutover the old services run on the host as systemd units, straight from git
+clones (baseline, section 3; ADR-0007, Context). Whatever is checked out is what runs:
+the production bot has run an uncommitted branch this way. Decision 3's freeze and
+G-0025-5's guard are both about commits, so code that is live but not on the default
+branch escapes both, and is lost without notice when the new container replaces the
+unit (G-0025-9).
+
+Open:
+
+- Must every old service's clone be clean and on its default branch for the rest of
+  the rework, and is that checked, for example with `git status` and `git rev-parse`
+  against each unit's working directory, added to G-0025-5's merge-point comparison?
+- Does a change made directly in a live clone count as a critical fix under decision
+  3, and so also have to be made in this repository?
+- Who runs the check, and when: on every agent session on the server, on a timer, or
+  only before cutover?
 
 ## References
 
